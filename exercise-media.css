@@ -1,0 +1,39 @@
+/* Exercise illustrations: full-width paired poses, with optional animation. */
+.modal{max-width:820px}
+.mimg{display:block;border:1px solid #e6e6e6;border-radius:14px;overflow:hidden;background:#fff}
+.media-header{padding:14px 16px 0;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.media-header h3{font-size:15px;margin:0;color:#252525}
+.media-modes,.media-variants{display:flex;gap:6px;flex-wrap:wrap}
+.media-modes button,.media-variants button{font:inherit;font-size:13px;min-height:36px;padding:7px 12px;border:1px solid #dedede;border-radius:8px;color:#555;background:#fff;cursor:pointer}
+.media-modes button[aria-pressed="true"]{background:#262626;color:#fff;border-color:#262626}
+.media-variants{padding:12px 16px 0}
+.media-variants button[aria-pressed="true"]{color:#a52b25;background:#fff0ee;border-color:#e5a49f}
+.media-modes button:focus-visible,.media-variants button:focus-visible,.media-source:focus-visible{outline:3px solid #378add;outline-offset:3px}
+.media-poses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:8px 10px 0}
+.media-poses figure{margin:0;min-width:0}
+.media-poses img{width:100%;aspect-ratio:1;object-fit:contain;border-radius:0}
+.media-poses figcaption{text-align:center;color:#777;font-size:12px;padding:4px 0 12px}
+.media-animation{max-width:480px;margin:0 auto;padding:8px 10px 0}
+.media-animation img{width:100%;aspect-ratio:1;object-fit:contain;border-radius:0}
+.media-footer{padding:11px 16px;background:#fafafa;border-top:1px solid #efefef}
+.media-caption{font-size:13px;color:#484848;font-weight:600;margin:0 0 5px}
+.media-note{font-size:12px;line-height:1.6;color:#757575;margin:3px 0}
+.media-source{font-size:12px;color:#626262;text-underline-offset:3px}
+.media-error{padding:35px 18px;text-align:center;font-size:14px;color:#777}
+.mrow{flex-direction:column;gap:12px}
+.mdiag{flex:initial;order:2;border-top:1px solid #e8e6e0;padding-top:10px}
+.mdiag summary{cursor:pointer;font-size:13px;color:#6c6b66}
+.mdiag #mv{max-width:210px;margin:12px auto 0;text-align:center}
+.mdiag .legend{justify-content:center;margin-bottom:10px}
+.minfo{min-width:0;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.msec h3{font-size:14px}
+.mtag,.mset>div{font-size:12px}
+.msec ol li,.msec ul li{font-size:14px}
+@media(max-width:540px){
+ .overlay{padding:8px}.modal{max-height:94vh;max-height:94dvh;border-radius:13px}
+ .mtop{padding:18px 16px 12px}.mbody{padding:12px 12px 20px}
+ .media-header{padding:12px 12px 0;gap:8px}.media-header h3{font-size:14px}
+ .media-modes button,.media-variants button{font-size:12px;padding:7px 10px}
+ .media-variants{padding:10px 12px 0}.media-footer{padding:10px 12px}
+ .minfo{grid-template-columns:1fr;gap:0}.media-poses{gap:0;padding:8px 2px 0}
+}

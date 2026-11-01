@@ -1,0 +1,686 @@
+window.EXERCISE_MEDIA = {
+  "bench": [
+    {
+      "key": "bench",
+      "label": "바벨 벤치프레스",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bench-Press.gif",
+      "source": "https://fitnessprogramer.com/exercise/bench-press/",
+      "local": "assets/exercises/Barbell-Bench-Press.gif",
+      "pose1": "assets/exercises/Barbell-Bench-Press.pose1.webp",
+      "pose2": "assets/exercises/Barbell-Bench-Press.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "incdb": [
+    {
+      "key": "incdb",
+      "label": "인클라인 덤벨프레스",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif",
+      "source": "https://fitnessprogramer.com/exercise/incline-dumbbell-press/",
+      "note": "그림은 인클라인 프레스 동작 예시입니다. 이 루틴의 벤치 설정은 30°입니다.",
+      "local": "assets/exercises/Incline-Dumbbell-Press.gif",
+      "pose1": "assets/exercises/Incline-Dumbbell-Press.pose1.webp",
+      "pose2": "assets/exercises/Incline-Dumbbell-Press.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "fly": [
+    {
+      "key": "fly",
+      "label": "펙덱 플라이",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pec-Deck-Fly.gif",
+      "source": "https://fitnessprogramer.com/exercise/pec-deck-fly/",
+      "local": "assets/exercises/Pec-Deck-Fly.gif",
+      "pose1": "assets/exercises/Pec-Deck-Fly.pose1.webp",
+      "pose2": "assets/exercises/Pec-Deck-Fly.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    },
+    {
+      "key": "fly",
+      "label": "케이블 플라이",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Crossover.gif",
+      "source": "https://fitnessprogramer.com/exercise/cable-crossover/",
+      "local": "assets/exercises/Cable-Crossover.gif",
+      "pose1": "assets/exercises/Cable-Crossover.pose1.webp",
+      "pose2": "assets/exercises/Cable-Crossover.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 7
+    }
+  ],
+  "ohp": [
+    {
+      "key": "ohp",
+      "label": "시티드 덤벨 숄더프레스",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif",
+      "source": "https://fitnessprogramer.com/exercise/dumbbell-shoulder-press/",
+      "local": "assets/exercises/Dumbbell-Shoulder-Press.gif",
+      "pose1": "assets/exercises/Dumbbell-Shoulder-Press.pose1.webp",
+      "pose2": "assets/exercises/Dumbbell-Shoulder-Press.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "cablelat": [
+    {
+      "key": "cablelat",
+      "label": "한 팔 케이블 레터럴 레이즈",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/07/one-arm-Cable-Lateral-Raise.gif",
+      "source": "https://fitnessprogramer.com/exercise/cable-lateral-raise/",
+      "local": "assets/exercises/one-arm-Cable-Lateral-Raise.gif",
+      "pose1": "assets/exercises/one-arm-Cable-Lateral-Raise.pose1.webp",
+      "pose2": "assets/exercises/one-arm-Cable-Lateral-Raise.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 4
+    }
+  ],
+  "ohext": [
+    {
+      "key": "ohext",
+      "label": "오버헤드 케이블 익스텐션",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/04/Cable-Rope-Overhead-Triceps-Extension.gif",
+      "source": "https://fitnessprogramer.com/exercise/cable-rope-overhead-triceps-extension/",
+      "note": "그림은 높은 케이블을 사용한 변형입니다. 아래 설명의 낮은 케이블 설정과 위치가 다릅니다.",
+      "local": "assets/exercises/Cable-Rope-Overhead-Triceps-Extension.gif",
+      "pose1": "assets/exercises/Cable-Rope-Overhead-Triceps-Extension.pose1.webp",
+      "pose2": "assets/exercises/Cable-Rope-Overhead-Triceps-Extension.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 7
+    }
+  ],
+  "pushdown": [
+    {
+      "key": "pushdown",
+      "label": "로프 푸시다운",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/06/Rope-Pushdown.gif",
+      "source": "https://fitnessprogramer.com/exercise/rope-pushdown/",
+      "local": "assets/exercises/Rope-Pushdown.gif",
+      "pose1": "assets/exercises/Rope-Pushdown.pose1.webp",
+      "pose2": "assets/exercises/Rope-Pushdown.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 7
+    }
+  ],
+  "pullup": [
+    {
+      "key": "pullup",
+      "label": "랫풀다운",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Lat-Pulldown.gif",
+      "source": "https://fitnessprogramer.com/exercise/lat-pulldown/",
+      "local": "assets/exercises/Lat-Pulldown.gif",
+      "pose1": "assets/exercises/Lat-Pulldown.pose1.webp",
+      "pose2": "assets/exercises/Lat-Pulldown.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 4
+    },
+    {
+      "key": "pullup",
+      "label": "턱걸이",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pull-up.gif",
+      "source": "https://fitnessprogramer.com/exercise/pull-up/",
+      "local": "assets/exercises/Pull-up.gif",
+      "pose1": "assets/exercises/Pull-up.pose1.webp",
+      "pose2": "assets/exercises/Pull-up.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "csrow": [
+    {
+      "key": "csrow",
+      "label": "체스트 서포티드 로우 · 팔꿈치 벌림",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/45-Degree-Incline-Row.gif",
+      "source": "https://fitnessprogramer.com/exercise/45-degree-incline-row/",
+      "note": "45도 벤치에 가슴을 대고 팔꿈치를 벌리는 로우 변형입니다. 뉴트럴 그립으로 팔꿈치를 몸에 붙이는 기본 로우와 팔 경로가 다릅니다.",
+      "local": "assets/exercises/45-Degree-Incline-Row.gif",
+      "pose1": "assets/exercises/45-Degree-Incline-Row.pose1.webp",
+      "pose2": "assets/exercises/45-Degree-Incline-Row.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 7
+    }
+  ],
+  "cablerow": [
+    {
+      "key": "cablerow",
+      "label": "시티드 케이블 로우 · V바",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/06/close-grip-cable-row.gif",
+      "source": "https://fitnessprogramer.com/exercise/close-grip-cable-row/",
+      "local": "assets/exercises/close-grip-cable-row.gif",
+      "pose1": "assets/exercises/close-grip-cable-row.pose1.webp",
+      "pose2": "assets/exercises/close-grip-cable-row.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    },
+    {
+      "key": "cablerow",
+      "label": "시티드 케이블 로우 · 와이드바",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Cable-Row.gif",
+      "source": "https://fitnessprogramer.com/exercise/seated-cable-row/",
+      "note": "넓은 일자바를 잡고 팔꿈치를 벌리는 변형입니다. 기본 V바 로우는 V바 예시를 확인하세요.",
+      "local": "assets/exercises/Seated-Cable-Row.gif",
+      "pose1": "assets/exercises/Seated-Cable-Row.pose1.webp",
+      "pose2": "assets/exercises/Seated-Cable-Row.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 7
+    }
+  ],
+  "straightarm": [
+    {
+      "key": "straightarm",
+      "label": "스트레이트암 풀다운",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Cable-Straight-Arm-Pulldown.gif",
+      "source": "https://fitnessprogramer.com/exercise/cable-straight-arm-pulldown/",
+      "local": "assets/exercises/Cable-Straight-Arm-Pulldown.gif",
+      "pose1": "assets/exercises/Cable-Straight-Arm-Pulldown.pose1.webp",
+      "pose2": "assets/exercises/Cable-Straight-Arm-Pulldown.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 4
+    }
+  ],
+  "reardelt": [
+    {
+      "key": "reardelt",
+      "label": "리버스 펙덱",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Rear-Delt-Machine-Flys.gif",
+      "source": "https://fitnessprogramer.com/exercise/rear-delt-machine-fly/",
+      "local": "assets/exercises/Rear-Delt-Machine-Flys.gif",
+      "pose1": "assets/exercises/Rear-Delt-Machine-Flys.pose1.webp",
+      "pose2": "assets/exercises/Rear-Delt-Machine-Flys.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 7
+    }
+  ],
+  "inccurl": [
+    {
+      "key": "inccurl",
+      "label": "인클라인 덤벨 컬",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Incline-Dumbbell-Curl.gif",
+      "source": "https://fitnessprogramer.com/exercise/seated-incline-dumbbell-curl/",
+      "local": "assets/exercises/Seated-Incline-Dumbbell-Curl.gif",
+      "pose1": "assets/exercises/Seated-Incline-Dumbbell-Curl.pose1.webp",
+      "pose2": "assets/exercises/Seated-Incline-Dumbbell-Curl.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 7
+    }
+  ],
+  "hammer": [
+    {
+      "key": "hammer",
+      "label": "해머 컬",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hammer-Curl.gif",
+      "source": "https://fitnessprogramer.com/exercise/hammer-curl/",
+      "local": "assets/exercises/Hammer-Curl.gif",
+      "pose1": "assets/exercises/Hammer-Curl.pose1.webp",
+      "pose2": "assets/exercises/Hammer-Curl.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "squat": [
+    {
+      "key": "squat",
+      "label": "바벨 백스쿼트",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/BARBELL-SQUAT.gif",
+      "source": "https://fitnessprogramer.com/exercise/squat/",
+      "local": "assets/exercises/BARBELL-SQUAT.gif",
+      "pose1": "assets/exercises/BARBELL-SQUAT.pose1.webp",
+      "pose2": "assets/exercises/BARBELL-SQUAT.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "legpress": [
+    {
+      "key": "legpress",
+      "label": "레그프레스",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2015/11/Leg-Press.gif",
+      "source": "https://fitnessprogramer.com/exercise/leg-press/",
+      "local": "assets/exercises/Leg-Press.gif",
+      "pose1": "assets/exercises/Leg-Press.pose1.webp",
+      "pose2": "assets/exercises/Leg-Press.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "bulgarian": [
+    {
+      "key": "bulgarian",
+      "label": "덤벨 불가리안 스플릿 스쿼트",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Dumbbell-Bulgarian-Split-Squat.gif",
+      "source": "https://fitnessprogramer.com/exercise/dumbbell-bulgarian-split-squat/",
+      "local": "assets/exercises/Dumbbell-Bulgarian-Split-Squat.gif",
+      "pose1": "assets/exercises/Dumbbell-Bulgarian-Split-Squat.pose1.webp",
+      "pose2": "assets/exercises/Dumbbell-Bulgarian-Split-Squat.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "legext": [
+    {
+      "key": "legext",
+      "label": "레그 익스텐션",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/LEG-EXTENSION.gif",
+      "source": "https://fitnessprogramer.com/exercise/leg-extension/",
+      "local": "assets/exercises/LEG-EXTENSION.gif",
+      "pose1": "assets/exercises/LEG-EXTENSION.pose1.webp",
+      "pose2": "assets/exercises/LEG-EXTENSION.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 7
+    }
+  ],
+  "standcalf": [
+    {
+      "key": "standcalf",
+      "label": "스탠딩 카프 레이즈 · 덤벨",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Calf-Raise.gif",
+      "source": "https://fitnessprogramer.com/exercise/calf-raise/",
+      "note": "덤벨을 드는 변형 예시입니다. 머신 사용 시에도 발목을 움직이는 경로를 확인하세요.",
+      "local": "assets/exercises/Dumbbell-Calf-Raise.gif",
+      "pose1": "assets/exercises/Dumbbell-Calf-Raise.pose1.webp",
+      "pose2": "assets/exercises/Dumbbell-Calf-Raise.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "seatedcalf": [
+    {
+      "key": "seatedcalf",
+      "label": "시티드 카프 레이즈",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/06/Lever-Seated-Calf-Raise.gif",
+      "source": "https://fitnessprogramer.com/exercise/lever-seated-calf-raise/",
+      "local": "assets/exercises/Lever-Seated-Calf-Raise.gif",
+      "pose1": "assets/exercises/Lever-Seated-Calf-Raise.pose1.webp",
+      "pose2": "assets/exercises/Lever-Seated-Calf-Raise.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "hangleg": [
+    {
+      "key": "hangleg",
+      "label": "행잉 레그 레이즈",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/08/Hanging-Leg-Raises.gif",
+      "source": "https://fitnessprogramer.com/exercise/hanging-leg-raises/",
+      "local": "assets/exercises/Hanging-Leg-Raises.gif",
+      "pose1": "assets/exercises/Hanging-Leg-Raises.pose1.webp",
+      "pose2": "assets/exercises/Hanging-Leg-Raises.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "incmachine": [
+    {
+      "key": "incmachine",
+      "label": "인클라인 머신 프레스",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/06/Lever-Incline-Chest-Press.gif",
+      "source": "https://fitnessprogramer.com/exercise/lever-incline-chest-press/",
+      "local": "assets/exercises/Lever-Incline-Chest-Press.gif",
+      "pose1": "assets/exercises/Lever-Incline-Chest-Press.pose1.webp",
+      "pose2": "assets/exercises/Lever-Incline-Chest-Press.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 7
+    }
+  ],
+  "neutralpd": [
+    {
+      "key": "neutralpd",
+      "label": "뉴트럴그립 랫풀다운 · V바",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/06/V-bar-Lat-Pulldown.gif",
+      "source": "https://fitnessprogramer.com/exercise/v-bar-lat-pulldown/",
+      "local": "assets/exercises/V-bar-Lat-Pulldown.gif",
+      "pose1": "assets/exercises/V-bar-Lat-Pulldown.pose1.webp",
+      "pose2": "assets/exercises/V-bar-Lat-Pulldown.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 7
+    }
+  ],
+  "machinerow": [
+    {
+      "key": "machinerow",
+      "label": "시티드 머신 로우",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Row-Machine.gif",
+      "source": "https://fitnessprogramer.com/exercise/seated-row-machine/",
+      "local": "assets/exercises/Seated-Row-Machine.gif",
+      "pose1": "assets/exercises/Seated-Row-Machine.pose1.webp",
+      "pose2": "assets/exercises/Seated-Row-Machine.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 7
+    }
+  ],
+  "dblat": [
+    {
+      "key": "dblat",
+      "label": "덤벨 레터럴 레이즈",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lateral-Raise.gif",
+      "source": "https://fitnessprogramer.com/exercise/dumbbell-lateral-raise/",
+      "local": "assets/exercises/Dumbbell-Lateral-Raise.gif",
+      "pose1": "assets/exercises/Dumbbell-Lateral-Raise.pose1.webp",
+      "pose2": "assets/exercises/Dumbbell-Lateral-Raise.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "facepull": [
+    {
+      "key": "facepull",
+      "label": "페이스풀",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Face-Pull.gif",
+      "source": "https://fitnessprogramer.com/exercise/face-pull/",
+      "local": "assets/exercises/Face-Pull.gif",
+      "pose1": "assets/exercises/Face-Pull.pose1.webp",
+      "pose2": "assets/exercises/Face-Pull.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 7
+    }
+  ],
+  "cablecurl": [
+    {
+      "key": "cablecurl",
+      "label": "케이블 컬",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/cable-curl.gif",
+      "source": "https://fitnessprogramer.com/exercise/cable-curl/",
+      "local": "assets/exercises/cable-curl.gif",
+      "pose1": "assets/exercises/cable-curl.pose1.webp",
+      "pose2": "assets/exercises/cable-curl.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 7
+    }
+  ],
+  "rdl": [
+    {
+      "key": "rdl",
+      "label": "바벨 루마니안 데드리프트",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Romanian-Deadlift.gif",
+      "source": "https://fitnessprogramer.com/exercise/romanian-deadlift/",
+      "local": "assets/exercises/Barbell-Romanian-Deadlift.gif",
+      "pose1": "assets/exercises/Barbell-Romanian-Deadlift.pose1.webp",
+      "pose2": "assets/exercises/Barbell-Romanian-Deadlift.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "seatedcurl": [
+    {
+      "key": "seatedcurl",
+      "label": "시티드 레그컬",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/08/Seated-Leg-Curl.gif",
+      "source": "https://fitnessprogramer.com/exercise/seated-leg-curl/",
+      "local": "assets/exercises/Seated-Leg-Curl.gif",
+      "pose1": "assets/exercises/Seated-Leg-Curl.pose1.webp",
+      "pose2": "assets/exercises/Seated-Leg-Curl.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 7
+    }
+  ],
+  "hipthrust": [
+    {
+      "key": "hipthrust",
+      "label": "바벨 힙쓰러스트",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Hip-Thrust.gif",
+      "source": "https://fitnessprogramer.com/exercise/barbell-hip-thrusts/",
+      "local": "assets/exercises/Barbell-Hip-Thrust.gif",
+      "pose1": "assets/exercises/Barbell-Hip-Thrust.pose1.webp",
+      "pose2": "assets/exercises/Barbell-Hip-Thrust.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "smithsplit": [
+    {
+      "key": "smithsplit",
+      "label": "스미스 스플릿 스쿼트",
+      "source": "https://fitnessprogramer.com/exercise/smith-machine-lunge/",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2022/07/Smith-Machine-Lunge.gif",
+      "local": "assets/exercises/Smith-Machine-Lunge.gif",
+      "pose1": "assets/exercises/Smith-Machine-Lunge.pose1.webp",
+      "pose2": "assets/exercises/Smith-Machine-Lunge.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    },
+    {
+      "key": "smithsplit",
+      "label": "해크 스쿼트 머신",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Sled-Hack-Squat.gif",
+      "source": "https://fitnessprogramer.com/exercise/hack-squats-machine/",
+      "note": "대체 종목인 해크 스쿼트 예시입니다. 아래 자세 설명은 스미스 스플릿 스쿼트 기준입니다.",
+      "local": "assets/exercises/Sled-Hack-Squat.gif",
+      "pose1": "assets/exercises/Sled-Hack-Squat.pose1.webp",
+      "pose2": "assets/exercises/Sled-Hack-Squat.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "cablecrunch": [
+    {
+      "key": "cablecrunch",
+      "label": "케이블 크런치",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Kneeling-Cable-Crunch.gif",
+      "source": "https://fitnessprogramer.com/exercise/kneeling-cable-crunch/",
+      "local": "assets/exercises/Kneeling-Cable-Crunch.gif",
+      "pose1": "assets/exercises/Kneeling-Cable-Crunch.pose1.webp",
+      "pose2": "assets/exercises/Kneeling-Cable-Crunch.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "bike": [
+    {
+      "key": "bike",
+      "label": "실내 사이클",
+      "source": "https://fitnessprogramer.com/exercise/bike/",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/06/Bike.gif",
+      "kind": "cardio",
+      "local": "assets/exercises/Bike.gif",
+      "pose1": "assets/exercises/Bike.pose1.webp",
+      "pose2": "assets/exercises/Bike.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 4
+    }
+  ],
+  "core": [
+    {
+      "key": "core",
+      "label": "플랭크",
+      "source": "https://fitnessprogramer.com/exercise/plank/",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/plank.gif",
+      "local": "assets/exercises/plank.gif",
+      "pose1": "assets/exercises/plank.pose1.webp",
+      "pose2": "assets/exercises/plank.pose2.webp",
+      "static": true,
+      "frames": 1,
+      "second_frame": 0
+    },
+    {
+      "key": "core",
+      "label": "데드버그",
+      "source": "https://fitnessprogramer.com/exercise/dead-bug/",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Dead-Bug.gif",
+      "local": "assets/exercises/Dead-Bug.gif",
+      "pose1": "assets/exercises/Dead-Bug.pose1.webp",
+      "pose2": "assets/exercises/Dead-Bug.pose2.webp",
+      "static": false,
+      "frames": 24,
+      "second_frame": 6
+    }
+  ],
+  "fullstretch": [
+    {
+      "key": "fullstretch",
+      "label": "아이 자세",
+      "source": "https://fitnessprogramer.com/exercise/balasana-child-pose/",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2022/05/Balasana-Child-Pose.gif",
+      "kind": "mobility",
+      "local": "assets/exercises/Balasana-Child-Pose.gif",
+      "pose1": "assets/exercises/Balasana-Child-Pose.pose1.webp",
+      "pose2": "assets/exercises/Balasana-Child-Pose.pose2.webp",
+      "static": true,
+      "frames": 1,
+      "second_frame": 0
+    },
+    {
+      "key": "fullstretch",
+      "label": "문틀 가슴·어깨 스트레칭",
+      "source": "https://fitnessprogramer.com/exercise/doorway-pec-and-shoulder-stretch/",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/01/Doorway-chest-and-sshoulder-stretch.gif",
+      "kind": "mobility",
+      "local": "assets/exercises/Doorway-chest-and-sshoulder-stretch.gif",
+      "pose1": "assets/exercises/Doorway-chest-and-sshoulder-stretch.pose1.webp",
+      "pose2": "assets/exercises/Doorway-chest-and-sshoulder-stretch.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    },
+    {
+      "key": "fullstretch",
+      "label": "대퇴사두 스트레칭",
+      "source": "https://fitnessprogramer.com/exercise/standing-quadriceps-stretch/",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/08/Standing-Quadriceps-Stretch.gif",
+      "kind": "mobility",
+      "local": "assets/exercises/Standing-Quadriceps-Stretch.gif",
+      "pose1": "assets/exercises/Standing-Quadriceps-Stretch.pose1.webp",
+      "pose2": "assets/exercises/Standing-Quadriceps-Stretch.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    },
+    {
+      "key": "fullstretch",
+      "label": "누워서 햄스트링 스트레칭",
+      "source": "https://fitnessprogramer.com/exercise/lying-hamstring-stretch/",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Hamstrings-Lying-Stretch.gif",
+      "kind": "mobility",
+      "local": "assets/exercises/Hamstrings-Lying-Stretch.gif",
+      "pose1": "assets/exercises/Hamstrings-Lying-Stretch.pose1.webp",
+      "pose2": "assets/exercises/Hamstrings-Lying-Stretch.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "upstretch": [
+    {
+      "key": "upstretch",
+      "label": "문틀 가슴·어깨 스트레칭",
+      "source": "https://fitnessprogramer.com/exercise/doorway-pec-and-shoulder-stretch/",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/01/Doorway-chest-and-sshoulder-stretch.gif",
+      "kind": "mobility",
+      "local": "assets/exercises/Doorway-chest-and-sshoulder-stretch.gif",
+      "pose1": "assets/exercises/Doorway-chest-and-sshoulder-stretch.pose1.webp",
+      "pose2": "assets/exercises/Doorway-chest-and-sshoulder-stretch.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    },
+    {
+      "key": "upstretch",
+      "label": "아이 자세",
+      "source": "https://fitnessprogramer.com/exercise/balasana-child-pose/",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2022/05/Balasana-Child-Pose.gif",
+      "kind": "mobility",
+      "note": "광배와 등 이완을 위한 아이 자세 예시입니다.",
+      "local": "assets/exercises/Balasana-Child-Pose.gif",
+      "pose1": "assets/exercises/Balasana-Child-Pose.pose1.webp",
+      "pose2": "assets/exercises/Balasana-Child-Pose.pose2.webp",
+      "static": true,
+      "frames": 1,
+      "second_frame": 0
+    }
+  ],
+  "lowstretch": [
+    {
+      "key": "lowstretch",
+      "label": "대퇴사두 스트레칭",
+      "source": "https://fitnessprogramer.com/exercise/standing-quadriceps-stretch/",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/08/Standing-Quadriceps-Stretch.gif",
+      "kind": "mobility",
+      "local": "assets/exercises/Standing-Quadriceps-Stretch.gif",
+      "pose1": "assets/exercises/Standing-Quadriceps-Stretch.pose1.webp",
+      "pose2": "assets/exercises/Standing-Quadriceps-Stretch.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    },
+    {
+      "key": "lowstretch",
+      "label": "누워서 햄스트링 스트레칭",
+      "source": "https://fitnessprogramer.com/exercise/lying-hamstring-stretch/",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Hamstrings-Lying-Stretch.gif",
+      "kind": "mobility",
+      "local": "assets/exercises/Hamstrings-Lying-Stretch.gif",
+      "pose1": "assets/exercises/Hamstrings-Lying-Stretch.pose1.webp",
+      "pose2": "assets/exercises/Hamstrings-Lying-Stretch.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ],
+  "walk": [
+    {
+      "key": "walk",
+      "label": "걷기",
+      "kind": "cardio",
+      "source": "https://fitnessprogramer.com/exercise/walking/",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/09/Walking.gif",
+      "local": "assets/exercises/Walking.gif",
+      "pose1": "assets/exercises/Walking.pose1.webp",
+      "pose2": "assets/exercises/Walking.pose2.webp",
+      "static": false,
+      "frames": 24,
+      "second_frame": 12
+    }
+  ],
+  "run": [
+    {
+      "key": "run",
+      "label": "러닝",
+      "kind": "cardio",
+      "source": "https://fitnessprogramer.com/exercise/running/",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/07/Run.gif",
+      "local": "assets/exercises/Run.gif",
+      "pose1": "assets/exercises/Run.pose1.webp",
+      "pose2": "assets/exercises/Run.pose2.webp",
+      "static": false,
+      "frames": 12,
+      "second_frame": 6
+    }
+  ]
+};
