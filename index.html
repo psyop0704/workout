@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>주간 운동 루틴 v15.5</title>
+<title>주간 운동 루틴 v15.6</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="운동루틴">
@@ -473,12 +473,14 @@ repeating-linear-gradient(to bottom,transparent 0,transparent 9.6px,#33333B 9.6p
 .logdaylab{font-size:11.5px;color:var(--tx3);font-weight:600;margin:2px 4px 8px}
 .logdaylab:empty{display:none}
 .logdaydel{margin-top:10px}
+/* v15.6 픽토그램 */
+.st-img{width:84px;height:70px}
 
 </style>
 </head>
 <body>
 
-<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v15.5</div></header>
+<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v15.6</div></header>
 
 <section class="screen" id="scr-home">
 <div class="hero"><div class="hello" id="hello">안녕하세요 👋</div><div class="herodate" id="herodate"></div></div>
@@ -2518,42 +2520,48 @@ var STR=[
 {nm:'상부승모 스트레칭',t:'쪽당 15~20초',d:'머리를 옆으로 지그시 — 통증·저림 없는 범위만, 저림이 팔로 퍼지면 중단',img:'uppertrap'},
 {nm:'흉추 폼롤러 신전',t:'30~60초',d:'날개뼈 아래 폼롤러 두고 등 상부만 뒤로 젖히기',img:'troller'}]}];
 function stSvg(id){
-var F='<path d="M8 92 H112" stroke="#33333B" stroke-width="3" stroke-linecap="round"/>';
+var C={n:'#DCDCE3',f:'#6E6E79',g:'#CBFF4D',gf:'#8FB52F'};
+var FL='<path d="M6 93 H114" stroke="#2E2E36" stroke-width="3" stroke-linecap="round"/>';
+var WALL=function(x){return '<rect x="'+x+'" y="4" width="7" height="89" rx="2" fill="#2A2A32"/>'};
+var BL='stroke="#5AB2F5" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"';
 var P={
-catcow:{h:[28,46],l:['M37 50 L40 54 L40 90','M82 56 L90 88 L106 88'],a:['M37 50 Q60 36 84 54'],x:F},
-wallslide:{h:[60,15],l:['M60 23 L60 60','M60 60 L48 90','M60 60 L72 90'],a:['M60 34 L44 26 L44 8','M60 34 L76 26 L76 8'],x:F},
-pullapart:{h:[60,15],l:['M60 23 L60 60','M60 60 L48 90','M60 60 L72 90'],a:['M60 36 L22 32','M60 36 L98 32'],x:F+'<path d="M24 32 H96" stroke="#5AB2F5" stroke-width="2.5" stroke-dasharray="4 4"/>'},
-hip9090:{h:[40,32],l:['M40 40 L40 72'],a:['M40 72 L70 74 L72 90','M40 72 L22 84 L6 82'],x:F},
-legswing:{h:[54,14],l:['M54 22 L54 56','M54 56 L52 90','M54 34 L36 30'],a:['M54 56 L86 66'],x:F+'<path d="M84 48 q10 10 2 22" stroke="#5AB2F5" stroke-width="2.5" fill="none" stroke-dasharray="4 4"/>'},
-legswing2:{h:[60,14],l:['M60 22 L60 56','M60 56 L58 90','M60 34 L42 30'],a:['M60 56 L92 74','M60 56 L30 74'],x:F},
-lunge:{h:[46,20],l:['M46 28 L56 58','M56 58 L82 62 L82 90'],a:['M56 58 L30 86','M30 86 L10 88'],x:F},
-squat:{h:[56,24],l:['M56 32 L50 58','M54 40 L84 36'],a:['M50 58 L76 62','M76 62 L76 90'],x:F},
-askip:{h:[56,12],l:['M56 20 L58 52','M58 52 L52 90','M56 30 L74 42','M56 30 L40 18'],a:['M58 52 L84 58 L80 78'],x:F},
-toeraise:{h:[52,14],l:['M52 22 L52 58','M52 58 L52 86'],a:['M52 86 L70 78'],x:F+'<path d="M72 70 L72 62 M68 66 L72 62 L76 66" stroke="#5AB2F5" stroke-width="2.5" fill="none"/>'},
-ecalf:{h:[76,12],l:['M76 20 L76 54','M76 54 L76 74'],a:['M76 54 L76 74','M76 74 L66 82'],x:'<rect x="62" y="80" width="50" height="12" rx="2" fill="#2A2A31"/>'+F},
-quadst:{h:[54,13],l:['M54 21 L54 58','M54 58 L54 90','M54 30 L72 56'],a:['M54 58 L60 76','M60 76 L76 60'],x:F},
-hamst:{h:[62,38],l:['M36 78 L58 46','M58 50 L82 68'],a:['M36 78 L94 88'],x:F},
-gastro:{h:[62,19],l:['M62 27 L76 56','M68 34 L100 28','M76 56 L88 70 L88 90'],a:['M76 56 L48 90'],x:'<path d="M104 8 V92" stroke="#33333B" stroke-width="4"/>'+F},
-soleus:{h:[62,21],l:['M62 29 L74 56','M68 36 L100 30'],a:['M74 56 L56 76','M56 76 L52 90'],x:'<path d="M104 8 V92" stroke="#33333B" stroke-width="4"/>'+F},
-shinst:{h:[56,28],l:['M56 36 L62 64'],a:['M62 64 L86 78','M86 78 L62 88','M62 88 L52 86'],x:F},
-fig4:{h:[14,78],l:['M22 80 L56 82','M56 82 L74 60 L88 82'],a:['M56 82 L80 68','M80 68 L66 56'],x:F},
-bridge:{h:[14,84],l:['M78 64 L80 90','M30 88 L52 88'],a:['M22 84 L62 60','M62 60 L78 64'],x:F},
-clam:{h:[14,70],l:['M22 72 L56 76','M56 76 L78 82 L96 86'],a:['M56 76 L78 58','M78 58 L96 66'],x:F},
-birddog:{h:[32,36],l:['M40 42 L76 42','M46 44 L46 88','M76 44 L86 88 L104 88'],a:['M40 40 L12 28','M76 42 L110 30'],x:F},
-splank:{h:[20,42],l:['M32 56 L26 88'],a:['M28 50 L96 86'],x:F},
-deadbug:{h:[14,80],l:['M22 82 L56 82','M56 82 L74 74 L88 82','M28 84 L12 86'],a:['M56 82 L70 54','M34 82 L34 52'],x:F},
-chintuck:{h:[66,38],l:['M66 50 L66 90'],a:[],x:F+'<path d="M98 38 L80 38 M86 31 L79 38 L86 45" stroke="#CBFF4D" stroke-width="4" fill="none" stroke-linecap="round"/>'},
-isoneck:{h:[58,32],l:['M58 44 L58 90'],a:['M58 56 L82 38'],x:F+'<path d="M74 24 L66 31" stroke="#5AB2F5" stroke-width="3" stroke-linecap="round"/>'},
-uppertrap:{h:[66,30],l:['M60 42 L60 90'],a:['M60 54 L90 28'],x:F+'<path d="M52 18 q-8 6 -4 14" stroke="#5AB2F5" stroke-width="2.5" fill="none" stroke-dasharray="4 4"/>'},
-troller:{h:[16,80],l:['M84 72 L98 82 L98 90'],a:['M24 84 Q56 54 86 72'],x:'<circle cx="58" cy="82" r="10" fill="#2A2A31"/>'+F}
+catcow:{h:[22,63],t:[[34,58],[80,58]],tq:[57,30],tc:'g',L:[['f',[[38,59],[38,74],[37,88]]],['f',[[82,60],[87,86],[104,88]]],['n',[[34,59],[33,74],[32,88]]],['n',[[78,60],[80,86],[99,88]]]]},
+wallslide:{h:[60,15],t:[[60,28],[60,55]],L:[['n',[[56,57],[54,73],[53,88]]],['n',[[64,57],[66,73],[67,88]]],['g',[[52,31],[42,20],[38,6]]],['g',[[68,31],[78,20],[82,6]]]],x:'<rect x="30" y="2" width="60" height="91" rx="4" fill="#18181D"/>'},
+hip9090:{h:[42,27],t:[[42,40],[42,71]],L:[['f',[[40,74],[22,84],[6,86]]],['g',[[44,74],[72,76],[75,88]]],['n',[[43,44],[56,56],[68,66]]]]},
+legswing:{h:[58,14],t:[[58,27],[58,55]],L:[['f',[[58,31],[68,43],[72,56]]],['n',[[58,57],[58,73],[58,88]]],['g',[[58,57],[78,66],[96,72]]],['n',[[58,31],[42,36],[28,33]]]],x:WALL(17)+'<path d="M100 52 q12 16 0 32" '+BL+' stroke-dasharray="4 4"/>'},
+lunge:{h:[51,16],t:[[52,29],[54,58]],L:[['g',[[53,61],[38,86],[16,88]]],['n',[[55,61],[77,63],[79,88]]],['n',[[52,33],[64,45],[74,58]]]]},
+squat:{h:[60,22],t:[[56,34],[40,62]],L:[['f',[[43,64],[64,58],[63,88]]],['g',[[41,64],[62,62],[58,88]]],['f',[[58,37],[74,36],[90,34]]],['n',[[56,39],[72,40],[88,40]]]]},
+legswing2:{h:[60,14],t:[[60,27],[60,55]],L:[['n',[[57,57],[57,73],[57,88]]],['g',[[63,57],[80,67],[96,76]]],['n',[[53,30],[40,33],[27,32]]],['n',[[67,30],[77,40],[81,52]]]],x:'<path d="M101 62 q8 14 -4 26" '+BL+' stroke-dasharray="4 4"/>'},
+askip:{h:[60,13],t:[[59,26],[56,53]],L:[['f',[[59,30],[48,42],[40,34]]],['n',[[56,56],[53,72],[49,88]]],['g',[[56,56],[77,57],[75,77]]],['n',[[59,30],[70,41],[80,34]]]]},
+toeraise:{h:[52,13],t:[[52,26],[52,55]],L:[['f',[[54,58],[54,73],[54,86]]],['n',[[52,30],[56,44],[58,58]]],['n',[[51,58],[51,73],[51,86]]],['g',[[51,86],[68,78]]]],x:'<path d="M76 76 V60 M70 66 L76 60 L82 66" '+BL+'/>'},
+ecalf:{h:[78,11],t:[[78,24],[78,50]],L:[['n',[[78,28],[90,36],[100,30]]],['n',[[77,53],[76,66],[68,80]]],['g',[[68,80],[58,87]]]],x:'<rect x="62" y="78" width="52" height="15" rx="2" fill="#2A2A32"/><path d="M48 62 V78 M42 72 L48 78 L54 72" '+BL+'/>'},
+quadst:{h:[54,13],t:[[54,26],[54,54]],L:[['f',[[54,30],[66,38],[76,32]]],['n',[[54,57],[54,73],[54,88]]],['g',[[54,57],[57,75],[43,60]]],['n',[[54,30],[44,44],[42,58]]]]},
+hamst:{h:[70,50],t:[[60,58],[34,82]],L:[['g',[[36,84],[66,86],[98,86]]],['n',[[60,61],[78,72],[95,80]]]]},
+gastro:{h:[82,21],t:[[78,33],[64,58]],L:[['f',[[78,37],[92,39],[102,34]]],['g',[[63,61],[45,75],[26,88]]],['n',[[65,61],[82,71],[85,88]]],['n',[[78,40],[92,44],[102,42]]]],x:WALL(104)},
+soleus:{h:[82,23],t:[[78,35],[64,60]],L:[['f',[[78,39],[92,41],[102,36]]],['g',[[63,63],[54,78],[46,88]]],['n',[[65,63],[82,73],[85,88]]],['n',[[78,42],[92,46],[102,44]]]],x:WALL(104)},
+shinst:{h:[50,30],t:[[50,43],[46,70]],L:[['g',[[46,73],[72,84],[40,88]]],['n',[[50,47],[60,59],[66,71]]]]},
+fig4:{h:[15,83],t:[[27,85],[56,85]],L:[['f',[[56,85],[72,62],[90,68]]],['g',[[57,84],[80,74],[72,58]]],['n',[[30,84],[50,72],[70,64]]]]},
+bridge:{h:[17,84],t:[[30,86],[66,62]],tc:'g',L:[['f',[[30,87],[46,89],[60,89]]],['n',[[67,64],[84,66],[86,88]]]]},
+clam:{h:[15,74],t:[[27,77],[58,79]],L:[['f',[[58,82],[78,87],[96,88]]],['g',[[59,79],[78,61],[95,84]]],['n',[[29,78],[25,63],[16,65]]]]},
+birddog:{h:[27,45],t:[[40,52],[80,52]],L:[['f',[[40,55],[40,71],[40,88]]],['f',[[80,55],[81,86],[98,88]]],['g',[[40,50],[22,43],[6,38]]],['g',[[80,50],[98,46],[114,42]]]]},
+splank:{h:[22,48],t:[[33,60],[66,72]],tc:'g',L:[['f',[[35,59],[42,42],[47,26]]],['n',[[66,73],[84,79],[103,86]]],['n',[[33,62],[33,87],[49,88]]]]},
+uppertrap:{h:[50,31],t:[[60,44],[60,88]],L:[['n',[[52,48],[48,68],[48,86]]],['g',[[68,47],[78,28],[56,22]]]],x:'<path d="M36 22 q-6 10 2 18" '+BL+' stroke-dasharray="4 4"/>'},
+deadbug:{h:[15,83],t:[[27,85],[57,85]],L:[['f',[[31,83],[33,67],[35,51]]],['f',[[57,84],[60,63],[78,61]]],['g',[[28,83],[16,74],[5,68]]],['g',[[58,84],[80,80],[104,82]]]]},
+chintuck:{h:[62,30],t:[[60,44],[58,88]],L:[['n',[[60,48],[64,68],[64,86]]]],x:'<path d="M102 30 H82 M89 23 L82 30 L89 37" stroke="#CBFF4D" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'},
+isoneck:{h:[60,28],t:[[60,42],[60,88]],L:[['n',[[50,46],[46,66],[46,86]]],['g',[[70,46],[86,40],[73,27]]]],x:'<path d="M80 16 l6 -5 M84 22 l8 -2" '+BL+'/>'},
+pullapart:{h:[60,15],t:[[60,28],[60,55]],L:[['n',[[56,57],[54,73],[53,88]]],['n',[[64,57],[66,73],[67,88]]],['g',[[52,33],[34,33],[17,33]]],['g',[[68,33],[86,33],[103,33]]]],x:'<path d="M10 33 H3 M6 28 L2 33 L6 38 M110 33 H117 M114 28 L118 33 L114 38" '+BL+'/>'},
+troller:{h:[21,80],t:[[33,77],[72,79]],tq:[53,56],tc:'g',L:[['n',[[33,77],[24,64],[17,73]]],['n',[[72,80],[88,63],[96,88]]]],x:'<circle cx="53" cy="83" r="10" fill="#2A2A32"/>'}
 };
 var o=P[id];if(!o)return '';
-var s='<svg viewBox="0 0 120 100">'+(o.x||'');
-s+='<g stroke="#A2A2AC" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">';
-o.l.forEach(function(p){s+='<path d="'+p+'"/>'});
-s+='</g><g stroke="#CBFF4D" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">';
-(o.a||[]).forEach(function(p){s+='<path d="'+p+'"/>'});
-s+='</g><circle cx="'+o.h[0]+'" cy="'+o.h[1]+'" r="7" fill="#C9C9D2"/></svg>';
+function pl(pts){return pts.map(function(p,i){return (i?'L':'M')+p[0]+' '+p[1]}).join(' ')}
+function lim(c,pts){return '<path d="'+pl(pts)+'" stroke="'+C[c]+'" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'}
+var s='<svg viewBox="0 0 120 100">'+(o.x||'')+FL;
+o.L.forEach(function(l){if(l[0]==='f'||l[0]==='gf')s+=lim(l[0],l[1])});
+var a=o.t[0],b=o.t[1];
+var td=o.tq?('M'+a[0]+' '+a[1]+' Q'+o.tq[0]+' '+o.tq[1]+' '+b[0]+' '+b[1]):('M'+a[0]+' '+a[1]+' L'+b[0]+' '+b[1]);
+s+='<path d="'+td+'" stroke="'+C[o.tc||'n']+'" stroke-width="15" stroke-linecap="round" fill="none"/>';
+o.L.forEach(function(l){if(l[0]==='n'||l[0]==='g')s+=lim(l[0],l[1])});
+s+='<circle cx="'+o.h[0]+'" cy="'+o.h[1]+'" r="9.5" fill="#DCDCE3"/></svg>';
 return s}
 function stHas(e){return !!(e&&e.st&&Object.keys(e.st).length)}
 function stWeekCnt(id){
