@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>주간 운동 루틴 v15.8</title>
+<title>주간 운동 루틴 v15.9</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="운동루틴">
@@ -475,12 +475,27 @@ repeating-linear-gradient(to bottom,transparent 0,transparent 9.6px,#33333B 9.6p
 .logdaydel{margin-top:10px}
 /* v15.6 픽토그램 */
 .st-img{width:84px;height:70px}
+/* v15.9 종목별 기록 버튼·팝업 */
+.ex-top .histbtn{align-self:center;flex-shrink:0;width:40px;height:40px;margin-left:6px;border-radius:12px;border:1px solid #34343E;background:var(--sf2);color:var(--ac);display:flex;align-items:center;justify-content:center;padding:0;transition:all .2s}
+.ex-top .histbtn:active{transform:scale(.92);border-color:var(--ac)}
+.ex-top .histbtn + .logbtn{margin-left:6px}
+.day.editing .ex-top .histbtn{display:none}
+#hs-chart{margin:6px 0 10px}
+.hs-row{display:flex;align-items:center;gap:10px;padding:10px 4px;border-top:1px solid #1E1E24;cursor:pointer}
+.hs-row:active{background:var(--sf2)}
+.hs-d{width:58px;white-space:nowrap;flex-shrink:0;font-size:12.5px;font-weight:800;color:var(--tx)}
+.hs-d span{font-size:10.5px;color:var(--tx3);font-weight:700}
+.hs-s{flex:1;font-size:12px;color:var(--tx2);line-height:1.5;font-variant-numeric:tabular-nums}
+.hs-e{font-size:11px;color:var(--tx3);font-weight:700;flex-shrink:0}
+#hsheet .bigbtn{margin-top:12px}
+.ex-name{word-break:keep-all;overflow-wrap:anywhere}
+.ex-top .histbtn{width:36px;height:36px;margin-left:4px}
 
 </style>
 </head>
 <body>
 
-<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v15.8</div></header>
+<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v15.9</div></header>
 
 <section class="screen" id="scr-home">
 <div class="hero"><div class="hello" id="hello">안녕하세요 👋</div><div class="herodate" id="herodate"></div></div>
@@ -1192,6 +1207,20 @@ repeating-linear-gradient(to bottom,transparent 0,transparent 9.6px,#33333B 9.6p
 </div>
 <button type="button" class="bigbtn" onclick="saveExEdit()">저장</button>
 <p class="mutetxt"><b>오늘만 대체</b>: 기구가 사용 중일 때 등 오늘 하루만 다른 운동으로 교체합니다 — 다음 주 루틴은 그대로 유지. 이름을 바꾸면 <b>새 종목</b>으로 기록됩니다(기존 종목 기록은 그대로 보존).</p>
+</div>
+
+<div class="sheet-ov" id="hsheet-ov" onclick="if(event.target===this)closeHist()"></div>
+<div class="sheet" id="hsheet" role="dialog" aria-modal="true" aria-label="종목 기록">
+<div class="sh-head"><div><b id="hs-title">기록</b><div class="mutetxt" style="margin-top:2px" id="hs-sub"></div></div><button type="button" class="sh-x" onclick="closeHist()" aria-label="닫기">&times;</button></div>
+<div class="pickchips chartchips rgchips" id="hs-rg">
+<button type="button" data-rg="15" onclick="hsRg('15')">최근 15회</button>
+<button type="button" data-rg="3m" onclick="hsRg('3m')">3개월</button>
+<button type="button" data-rg="1y" onclick="hsRg('1y')">1년</button>
+<button type="button" data-rg="all" onclick="hsRg('all')">전체</button>
+</div>
+<div id="hs-chart"></div>
+<div id="hs-list"></div>
+<button type="button" class="bigbtn" onclick="histLog()">＋ 이 종목 기록하기</button>
 </div>
 
 <div class="sheet-ov" id="cdsheet-ov" onclick="if(event.target===this)closeCd()"></div>
@@ -2213,7 +2242,8 @@ if(typeof sx==='function')sx(k)});
 var p=(typeof ent.p==='number')?ent.p:exRows.length;
 if(p<0)p=0;if(p>exRows.length)p=exRows.length;
 var anchor=(p<exRows.length)?exRows[p]:addb;
-if(anchor)lunch.insertBefore(r,anchor);else lunch.appendChild(r)})}
+if(anchor)lunch.insertBefore(r,anchor);else lunch.appendChild(r)});
+if(typeof histBtnsEnsure==='function')histBtnsEnsure()}
 function exOrderNorm(e){
 if(!e||!e.ex)return;
 var ks=Object.keys(e.ex);
@@ -2338,9 +2368,9 @@ drawChart(wrap,cur)}
 function chartRg(r){window._chartRg=r;
 document.querySelectorAll('#chart-rg button').forEach(function(b){b.classList.toggle('on',b.dataset.rg===r)});
 chartUpd()}
-function drawChart(wrap,cur){
+function drawChart(wrap,cur,o){
 if(!wrap||!cur)return;
-var rg=window._chartRg||'15';
+var rg=(o&&o.rg)||window._chartRg||'15',gid=(o&&o.gid)||'cg';
 var pts=cur.pts;
 if(rg==='15')pts=pts.slice(-15);
 else if(rg==='3m'||rg==='1y'){
@@ -2356,12 +2386,12 @@ var pad=(mx-mn)*0.15;mx+=pad;mn=Math.max(0,mn-pad);
 function X(i){return n===1?(L+(W-L-R)/2):L+(W-L-R)*i/(n-1)}
 function Y(v){return T+(H-T-B)*(1-(v-mn)/(mx-mn))}
 var s='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;display:block">';
-s+='<defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CBFF4D" stop-opacity="0.32"/><stop offset="1" stop-color="#CBFF4D" stop-opacity="0"/></linearGradient></defs>';
+s+='<defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CBFF4D" stop-opacity="0.32"/><stop offset="1" stop-color="#CBFF4D" stop-opacity="0"/></linearGradient></defs>';
 for(var g=0;g<3;g++){var gv=mn+(mx-mn)*g/2,gy=Y(gv);
 s+='<line x1="'+L+'" y1="'+gy+'" x2="'+(W-R)+'" y2="'+gy+'" stroke="#1E1E24" stroke-width="1"/>';
 s+='<text x="'+(L-5)+'" y="'+(gy+3)+'" fill="#6B6B74" font-size="8.5" text-anchor="end">'+(Math.round(gv*10)/10)+'</text>'}
 if(n>1){var pl=pts.map(function(p,i){return X(i)+','+Y(p.wk)}).join(' ');
-s+='<polygon points="'+pl+' '+X(n-1)+','+(H-B)+' '+X(0)+','+(H-B)+'" fill="url(#cg)"/>';
+s+='<polygon points="'+pl+' '+X(n-1)+','+(H-B)+' '+X(0)+','+(H-B)+'" fill="url(#'+gid+')"/>';
 s+='<polyline points="'+pl+'" fill="none" stroke="#CBFF4D" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>'}
 var step=Math.max(1,Math.ceil(n/5));
 var wStep=(n<=15)?1:Math.ceil(n/6);
@@ -2373,7 +2403,7 @@ if(n<=30&&(i%wStep===0||i===n-1))s+='<text x="'+x+'" y="'+(H-B+13)+'" fill="#5AB
 if(i===0||i===n-1||i%step===0)s+='<text x="'+x+'" y="'+(H-B+25)+'" fill="#6B6B74" font-size="8" text-anchor="middle">'+p.ds.slice(5).replace('-','/')+'</text>'});
 s+='<text x="'+L+'" y="'+(T-7)+'" fill="#6B6B74" font-size="8.5">kg</text></svg>';
 wrap.innerHTML=s;
-var sum=document.getElementById('chart-sum');
+var sum=o?o.sumEl:document.getElementById('chart-sum');
 if(sum){var _inv=(cur.k==='apull'),best=(_inv?Math.min:Math.max).apply(null,cur.pts.map(function(p){return p.wk}));
 sum.textContent=cur.nm+' · '+(_inv?'최저 보조 ':'최고 ')+(Math.round(best*10)/10)+'kg · '+cur.pts.length+'회'}}
 /* ===== v14.3 유산소 추이 차트 ===== */
@@ -2688,7 +2718,7 @@ host.appendChild(del);
 del.style.display=has?'block':'none';del.textContent='이 날짜('+wMD(ds)+') 기록 전체 삭제';
 wHeaderUpd();wRepSync();
 if(typeof updInline==='function')updInline()}
-function wUiUpd(){wChipsUpd();wHeaderUpd()}
+function wUiUpd(){wChipsUpd();wHeaderUpd();if(typeof histBtnsEnsure==='function')histBtnsEnsure()}
 
 /* ===== v15.8 매일 어시스트 턱걸이 ===== */
 (function(){
@@ -2705,6 +2735,58 @@ window.EXERCISE_MEDIA.apull=pu.length?pu:window.EXERCISE_MEDIA.pullup}
 function wLabUpd(k){
 var lab=document.querySelector('.wcolw .wlab');if(!lab)return;
 var tn=lab.firstChild;if(tn&&tn.nodeType===3)tn.nodeValue=(k==='apull')?'보조 중량 ':'중량 '}
+
+/* ===== v15.9 종목별 기록 팝업 (📈 버튼) ===== */
+var HICON='<svg viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16 L8 10 L11 13 L17 5"/><path d="M13 5 H17 V9"/></svg>';
+function histKeyOf(row){
+var b=row.querySelector('.ex-top .logbtn');
+return (b&&b.dataset.k)||row.dataset.k||((typeof exKey==='function')?exKey(row):null)}
+function histBtnsEnsure(){
+document.querySelectorAll('.session.lunch .ex, .session.lunch .xex').forEach(function(row){
+var top=row.querySelector('.ex-top');if(!top||top.querySelector('.histbtn'))return;
+var hb=document.createElement('button');hb.type='button';hb.className='histbtn';hb.innerHTML=HICON;
+hb.setAttribute('aria-label','기록 보기');
+hb.addEventListener('click',function(ev){ev.stopPropagation();ev.preventDefault();var k=histKeyOf(row);if(k)openHist(k)});
+var lb=top.querySelector('.logbtn');
+if(lb)top.insertBefore(hb,lb);else top.appendChild(hb)})}
+function histName(k){
+var nm=(typeof EXMETA!=='undefined'&&EXMETA[k]&&EXMETA[k].name)||((typeof DB!=='undefined'&&DB[k])?DB[k].n:'');
+if(!nm&&typeof LOG!=='undefined'&&LOG){Object.keys(LOG.days).some(function(ds){var e=LOG.days[ds];if(e&&e.ex&&e.ex[k]&&e.ex[k].name){nm=e.ex[k].name;return true}})}
+return nm||k.replace(/^c_/,'').replace(/_/g,' ')}
+function openHist(k){
+window._hsK=k;window._hsRg=window._hsRg||'15';
+document.getElementById('hs-title').textContent=histName(k);
+histRender();
+document.getElementById('hsheet-ov').classList.add('active');
+document.getElementById('hsheet').classList.add('active');
+document.body.style.overflow='hidden'}
+function closeHist(){
+document.getElementById('hsheet-ov').classList.remove('active');
+document.getElementById('hsheet').classList.remove('active');
+document.body.style.overflow=''}
+function hsRg(r){window._hsRg=r;histRender()}
+function histRender(){
+var k=window._hsK;if(!k)return;
+document.querySelectorAll('#hs-rg button').forEach(function(b){b.classList.toggle('on',b.dataset.rg===window._hsRg)});
+var cur=chartData().filter(function(x){return x.k===k})[0];
+var wrap=document.getElementById('hs-chart'),sub=document.getElementById('hs-sub'),list=document.getElementById('hs-list');
+list.innerHTML='';
+if(!cur){wrap.innerHTML='<p class="mutetxt" style="margin:10px 0">아직 기록이 없습니다. 아래 버튼으로 첫 기록을 남겨 보세요.</p>';sub.textContent='기록 0회';
+document.getElementById('hs-rg').style.display='none';return}
+document.getElementById('hs-rg').style.display='';
+drawChart(wrap,cur,{rg:window._hsRg,gid:'hcg',sumEl:sub});
+var dows=['일','월','화','수','목','금','토'];
+var days=Object.keys(LOG.days).filter(function(ds){var e=LOG.days[ds];return e&&e.ex&&e.ex[k]&&e.ex[k].s&&e.ex[k].s.length}).sort().reverse().slice(0,12);
+days.forEach(function(ds){
+var ent=LOG.days[ds].ex[k],un=(ent.u==='lbs')?'lb':'kg';
+var d=new Date(ds+'T12:00:00');
+var row=document.createElement('div');row.className='hs-row';
+row.innerHTML='<div class="hs-d">'+(d.getMonth()+1)+'/'+d.getDate()+' <span>'+dows[d.getDay()]+'</span></div><div class="hs-s">'+ent.s.map(function(st){return fmtW(st.w)+un+'×'+st.r}).join(' · ')+'</div><div class="hs-e">수정 ›</div>';
+row.addEventListener('click',function(){closeHist();openSheet(k,ds)});
+list.appendChild(row)});
+var tot=Object.keys(LOG.days).filter(function(ds){var e=LOG.days[ds];return e&&e.ex&&e.ex[k]&&e.ex[k].s&&e.ex[k].s.length}).length;
+if(tot>12){var more=document.createElement('p');more.className='mutetxt';more.style.margin='6px 2px 0';more.textContent='최근 12회 표시 · 전체 '+tot+'회';list.appendChild(more)}}
+function histLog(){var k=window._hsK;closeHist();if(k)openSheet(k)}
 
 /* ===== v9 운동 기록 ===== */
 var KG2LB=2.20462;
