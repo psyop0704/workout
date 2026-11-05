@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>주간 운동 루틴 v15.9</title>
+<title>주간 운동 루틴 v16.0</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="운동루틴">
@@ -490,12 +490,17 @@ repeating-linear-gradient(to bottom,transparent 0,transparent 9.6px,#33333B 9.6p
 #hsheet .bigbtn{margin-top:12px}
 .ex-name{word-break:keep-all;overflow-wrap:anywhere}
 .ex-top .histbtn{width:36px;height:36px;margin-left:4px}
+/* v16.0 방식 선택 칩 */
+.varchips{margin-bottom:10px}
+.varchips button{height:40px;padding:0 13px;font-size:12px}
+.varchips button.on{background:var(--ac);border-color:var(--ac);color:var(--acd)}
+.vtag{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:7px;background:rgba(203,255,77,.12);color:var(--ac);font-size:10.5px;font-weight:800;vertical-align:middle}
 
 </style>
 </head>
 <body>
 
-<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v15.9</div></header>
+<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v16.0</div></header>
 
 <section class="screen" id="scr-home">
 <div class="hero"><div class="hello" id="hello">안녕하세요 👋</div><div class="herodate" id="herodate"></div></div>
@@ -1212,6 +1217,7 @@ repeating-linear-gradient(to bottom,transparent 0,transparent 9.6px,#33333B 9.6p
 <div class="sheet-ov" id="hsheet-ov" onclick="if(event.target===this)closeHist()"></div>
 <div class="sheet" id="hsheet" role="dialog" aria-modal="true" aria-label="종목 기록">
 <div class="sh-head"><div><b id="hs-title">기록</b><div class="mutetxt" style="margin-top:2px" id="hs-sub"></div></div><button type="button" class="sh-x" onclick="closeHist()" aria-label="닫기">&times;</button></div>
+<div class="pickchips varchips" id="hs-var"></div>
 <div class="pickchips chartchips rgchips" id="hs-rg">
 <button type="button" data-rg="15" onclick="hsRg('15')">최근 15회</button>
 <button type="button" data-rg="3m" onclick="hsRg('3m')">3개월</button>
@@ -2214,7 +2220,7 @@ exOrderNorm(e);
 var exRows=[].slice.call(lunch.querySelectorAll('.ex'));
 var addb=lunch.querySelector('.addexbtn');
 var arr=[];
-Object.keys(e.ex).forEach(function(k){if(!known[k])arr.push({k:k,ent:e.ex[k]})});
+Object.keys(e.ex).forEach(function(k){if(!known[k]&&!(k.indexOf('~')>0&&known[k.split('~')[0]]))arr.push({k:k,ent:e.ex[k]})});
 arr.sort(function(a,b){
 var pa=(typeof a.ent.p==='number')?a.ent.p:exRows.length;
 var pb=(typeof b.ent.p==='number')?b.ent.p:exRows.length;
@@ -2243,7 +2249,7 @@ var p=(typeof ent.p==='number')?ent.p:exRows.length;
 if(p<0)p=0;if(p>exRows.length)p=exRows.length;
 var anchor=(p<exRows.length)?exRows[p]:addb;
 if(anchor)lunch.insertBefore(r,anchor);else lunch.appendChild(r)});
-if(typeof histBtnsEnsure==='function')histBtnsEnsure()}
+if(typeof histBtnsEnsure==='function')histBtnsEnsure();if(typeof varTagsUpd==='function')varTagsUpd(e)}
 function exOrderNorm(e){
 if(!e||!e.ex)return;
 var ks=Object.keys(e.ex);
@@ -2734,7 +2740,8 @@ window.EXERCISE_MEDIA.apull=pu.length?pu:window.EXERCISE_MEDIA.pullup}
 })();
 function wLabUpd(k){
 var lab=document.querySelector('.wcolw .wlab');if(!lab)return;
-var tn=lab.firstChild;if(tn&&tn.nodeType===3)tn.nodeValue=(k==='apull')?'보조 중량 ':'중량 '}
+var tn=lab.firstChild;if(tn&&tn.nodeType===3)tn.nodeValue=(k==='apull')?'보조 중량 ':'중량 ';
+if(typeof varSheetChips==='function')varSheetChips(k)}
 
 /* ===== v15.9 종목별 기록 팝업 (📈 버튼) ===== */
 var HICON='<svg viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16 L8 10 L11 13 L17 5"/><path d="M13 5 H17 V9"/></svg>';
@@ -2754,6 +2761,7 @@ var nm=(typeof EXMETA!=='undefined'&&EXMETA[k]&&EXMETA[k].name)||((typeof DB!=='
 if(!nm&&typeof LOG!=='undefined'&&LOG){Object.keys(LOG.days).some(function(ds){var e=LOG.days[ds];if(e&&e.ex&&e.ex[k]&&e.ex[k].name){nm=e.ex[k].name;return true}})}
 return nm||k.replace(/^c_/,'').replace(/_/g,' ')}
 function openHist(k){
+if(VARS[k])k=varResolve(k,null,true)||k;
 window._hsK=k;window._hsRg=window._hsRg||'15';
 document.getElementById('hs-title').textContent=histName(k);
 histRender();
@@ -2768,6 +2776,7 @@ function hsRg(r){window._hsRg=r;histRender()}
 function histRender(){
 var k=window._hsK;if(!k)return;
 document.querySelectorAll('#hs-rg button').forEach(function(b){b.classList.toggle('on',b.dataset.rg===window._hsRg)});
+varChipsRender(document.getElementById('hs-var'),k,function(nk){window._hsK=nk;document.getElementById('hs-title').textContent=histName(nk);histRender()});
 var cur=chartData().filter(function(x){return x.k===k})[0];
 var wrap=document.getElementById('hs-chart'),sub=document.getElementById('hs-sub'),list=document.getElementById('hs-list');
 list.innerHTML='';
@@ -2787,6 +2796,59 @@ list.appendChild(row)});
 var tot=Object.keys(LOG.days).filter(function(ds){var e=LOG.days[ds];return e&&e.ex&&e.ex[k]&&e.ex[k].s&&e.ex[k].s.length}).length;
 if(tot>12){var more=document.createElement('p');more.className='mutetxt';more.style.margin='6px 2px 0';more.textContent='최근 12회 표시 · 전체 '+tot+'회';list.appendChild(more)}}
 function histLog(){var k=window._hsK;closeHist();if(k)openSheet(k)}
+
+/* ===== v16.0 '또는' 종목 — 방식(variant)별 분리 기록 ===== */
+var VARS={
+dblat:[{id:'db',nm:'덤벨 레터럴 레이즈'},{id:'cb',nm:'케이블 레터럴 레이즈'}],
+fly:[{id:'cb',nm:'케이블 플라이'},{id:'pd',nm:'펙덱 플라이'}],
+pullup:[{id:'pu',nm:'턱걸이'},{id:'lp',nm:'랫풀다운'}],
+squat:[{id:'bs',nm:'백스쿼트'},{id:'hs',nm:'해크스쿼트'}]};
+function varBase(k){return (k&&k.indexOf('~')>0)?k.split('~')[0]:k}
+function varMeta(vk){
+var b=varBase(vk),id=vk.split('~')[1],v=(VARS[b]||[]).filter(function(x){return x.id===id})[0];
+if(typeof EXMETA!=='undefined'){var bm=EXMETA[b]||{n:3,lo:8};
+if(!EXMETA[vk])EXMETA[vk]={n:bm.n,lo:bm.lo,name:v?v.nm:vk}}}
+function varHas(ds,k){var e=(typeof LOG!=='undefined'&&LOG)?LOG.days[ds]:null;return !!(e&&e.ex&&e.ex[k]&&e.ex[k].s&&e.ex[k].s.length)}
+function varResolve(k,ds,forHist){
+if(!k)return null;
+if(k.indexOf('~legacy~')===0)return k.slice(8);
+var b=varBase(k);if(!VARS[b])return null;
+if(k!==b){varMeta(k);return k}
+ds=ds||((typeof wDs==='function')?wDs():tds());
+var vs=VARS[b];
+for(var i=0;i<vs.length;i++){if(varHas(ds,b+'~'+vs[i].id)){varMeta(b+'~'+vs[i].id);return b+'~'+vs[i].id}}
+if(!forHist&&varHas(ds,b))return null;
+var lv=(LOG.last&&LOG.last['~'+b]&&LOG.last['~'+b].v)||vs[0].id;
+if(forHist){var anyLv=Object.keys(LOG.days).some(function(d){return varHas(d,b+'~'+lv)});
+if(!anyLv){var withData=vs.filter(function(x){return Object.keys(LOG.days).some(function(d){return varHas(d,b+'~'+x.id)})})[0];
+if(withData)lv=withData.id;else if(Object.keys(LOG.days).some(function(d){return varHas(d,b)}))return null}}
+varMeta(b+'~'+lv);return b+'~'+lv}
+function varCnt(e,k){if(!e||!e.ex)return 0;var n=0;
+Object.keys(e.ex).forEach(function(x){if(x===k||x.indexOf(k+'~')===0)n+=(e.ex[x].s||[]).length});return n}
+function varChipsRender(box,k,onPick){
+if(!box)return;var b=varBase(k);
+if(!VARS[b]){box.innerHTML='';box.style.display='none';return}
+box.style.display='';box.innerHTML='';
+var opts=VARS[b].map(function(v){return {k:b+'~'+v.id,nm:v.nm}});
+var legacy=Object.keys(LOG.days).some(function(d){return varHas(d,b)});
+if(legacy)opts.push({k:b,nm:'이전 기록(방식 미구분)'});
+opts.forEach(function(o){var bt=document.createElement('button');bt.type='button';bt.textContent=o.nm;
+bt.classList.toggle('on',o.k===k);
+bt.addEventListener('click',function(){if(o.k!==b)varMeta(o.k);onPick(o.k)});box.appendChild(bt)})}
+function varSheetChips(k){
+var us=document.getElementById('useg');if(!us)return;
+var box=document.getElementById('varchips');
+if(!box){box=document.createElement('div');box.id='varchips';box.className='pickchips varchips';us.parentNode.insertBefore(box,us)}
+varChipsRender(box,k,function(nk){var ds=SH&&SH.ds;openSheet(nk.indexOf('~')>0?nk:('~legacy~'+nk),ds)})}
+function varTagsUpd(e){
+document.querySelectorAll('.session.lunch .ex').forEach(function(row){
+var b=row.querySelector('.ex-top .logbtn');var k=b&&b.dataset.k;
+var tag=row.querySelector('.vtag');
+if(!k||!VARS[k]){if(tag)tag.remove();return}
+var ul=[];if(e&&e.ex)VARS[k].forEach(function(v){if(e.ex[k+'~'+v.id]&&e.ex[k+'~'+v.id].s&&e.ex[k+'~'+v.id].s.length)ul.push(v.nm)});var used=ul.length?ul.join(' + '):null;
+if(!used){if(tag)tag.remove();return}
+if(!tag){tag=document.createElement('span');tag.className='vtag';var nm=row.querySelector('.ex-name');if(nm)nm.appendChild(tag)}
+tag.textContent=used})}
 
 /* ===== v9 운동 기록 ===== */
 var KG2LB=2.20462;
@@ -2825,7 +2887,7 @@ function updInline(){
 var today=(typeof wDs==='function')?wDs():tds(),e=LOG.days[today];
 document.querySelectorAll('.logbtn').forEach(function(b){
 var k=b.dataset.k,meta=EXMETA[k]||{n:3};
-var s=(e&&e.ex&&e.ex[k]&&e.ex[k].s)?e.ex[k].s.length:0;
+var s=(typeof varCnt==='function')?varCnt(e,k):((e&&e.ex&&e.ex[k]&&e.ex[k].s)?e.ex[k].s.length:0);
 if(s>0){b.classList.add('has');b.textContent=(s>meta.n)?(s+'세트 ✓'):(s+'/'+meta.n+' ✓')}else{b.classList.remove('has');b.textContent='기록'}});
 var cb=document.getElementById('cardiobtn');
 if(cb){var on=e&&e.cardio;cb.classList.toggle('on',!!on);cb.textContent=''}
@@ -2874,7 +2936,7 @@ if(ent&&ent.s&&ent.s.length)return{w:ent.s[ent.s.length-1].w,r:ent.s[ent.s.lengt
 var last=LOG.last[SH.k];
 if(last)return{w:last.w,r:last.r||SH.meta.lo,u:last.u};
 return{w:(SH.unit==='lbs')?45:20,r:SH.meta.lo,u:SH.unit}}
-function openSheet(k,ds){var meta=EXMETA[k]||(EXMETA[k]={n:3,lo:8,name:(typeof DB!=='undefined'&&DB[k])?DB[k].n:k});ds=ds||((typeof wDs==='function')?wDs():tds());
+function openSheet(k,ds){if(typeof varResolve==='function'){var _vr=varResolve(k,ds);if(_vr)k=_vr}var meta=EXMETA[k]||(EXMETA[k]={n:3,lo:8,name:(typeof DB!=='undefined'&&DB[k])?DB[k].n:k});ds=ds||((typeof wDs==='function')?wDs():tds());
 var e=LOG.days[ds],ent=(e&&e.ex)?e.ex[k]:null;
 SH={ds:ds,k:k,meta:meta,unit:(ent&&ent.u)||((LOG.last[k]||{}).u)||'kg',cur:0,finished:false};
 SH.slots=Math.max(meta.n,(ent&&ent.s)?ent.s.length:0);
@@ -2925,10 +2987,10 @@ if(SH.finished){closeSheet();return}
 var w=wGetW(),r=wval(rEl);
 var e=dayEntry(SH.ds||tds(),true);if(!e.ex)e.ex={};
 var ent=e.ex[SH.k]||(e.ex[SH.k]={u:SH.unit,s:[],o:Object.keys(e.ex).length+1});
-ent.u=SH.unit;if(SH.k.indexOf('c_')===0)ent.name=SH.meta.name;
+ent.u=SH.unit;if(SH.k.indexOf('c_')===0||SH.k.indexOf('~')>0)ent.name=SH.meta.name;
 while(ent.s.length<SH.cur)ent.s.push({w:w,r:r});
 ent.s[SH.cur]={w:+(+w).toFixed(1),r:r};
-if(SH.ds===tds())LOG.last[SH.k]={u:SH.unit,w:ent.s[SH.cur].w,r:r};
+if(SH.ds===tds())LOG.last[SH.k]={u:SH.unit,w:ent.s[SH.cur].w,r:r};if(SH.k.indexOf('~')>0)LOG.last['~'+SH.k.split('~')[0]]={v:SH.k.split('~')[1]};
 persist();
 if(SH.cur<SH.slots-1){selSet(SH.cur+1)}
 else{SH.finished=true;renderChips();updDelBtn()}}
