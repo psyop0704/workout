@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>주간 운동 루틴 v16.2</title>
+<title>주간 운동 루틴 v16.3</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="운동루틴">
@@ -510,12 +510,19 @@ repeating-linear-gradient(to bottom,transparent 0,transparent 9.6px,#33333B 9.6p
 .ex-top .logbtn{grid-column:4;grid-row:1/span 2;margin-left:0}
 .ex-top .histbtn + .logbtn{margin-left:0}
 .ex-top .exctl{grid-column:3/5;grid-row:1/span 2;align-self:center}
+/* v16.3 홈 코치 코멘트 */
+.tc-coach{position:relative;z-index:1;margin-top:12px;background:rgba(16,22,2,.08);border-radius:14px;padding:9px 12px 10px}
+.tcc-h{font-size:10px;font-weight:900;letter-spacing:.14em;opacity:.6;margin-bottom:4px}
+.tcc-r{display:flex;gap:7px;font-size:12.5px;line-height:1.45;font-weight:600;color:#101602;padding:2px 0}
+.tcc-r b{font-weight:800}
+.tcc-i{flex-shrink:0;width:16px;text-align:center}
+.tcc-r>span:last-child{word-break:keep-all}
 
 </style>
 </head>
 <body>
 
-<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v16.2</div></header>
+<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v16.3</div></header>
 
 <section class="screen" id="scr-home">
 <div class="hero"><div class="hello" id="hello">안녕하세요 👋</div><div class="herodate" id="herodate"></div></div>
@@ -523,6 +530,7 @@ repeating-linear-gradient(to bottom,transparent 0,transparent 9.6px,#33333B 9.6p
 <div class="tc-top"><span class="tc-label">TODAY&#39;S WORKOUT</span><span class="tc-badge" id="tc-day"></span></div>
 <div class="tc-title" id="tc-title">—</div>
 <div class="tc-sub" id="tc-sub"></div>
+<div class="tc-coach" id="tc-coach" style="display:none"></div>
 <div class="tc-cta" id="tc-cta">운동 시작 →</div>
 </div>
 <div class="grid2">
@@ -1759,10 +1767,11 @@ document.getElementById('tc-sub').textContent=meta?meta.textContent:(sp[1]||'').
 document.getElementById('tc-day').textContent=['일요일','월요일','화요일','수요일','목요일','금요일','토요일'][wd];
 var e=LOG.days[tds()],done=e&&e.ex&&Object.keys(e.ex).length;
 document.getElementById('tc-cta').textContent=done?'✓ 기록 이어가기 →':'운동 시작 →';
+if(typeof coachUpd==='function')coachUpd(td);
 }else{tt.textContent='휴식일';
 document.getElementById('tc-sub').textContent='회복도 성장의 일부 — 걷기나 스트레칭 정도만';
 document.getElementById('tc-day').textContent='주말';
-document.getElementById('tc-cta').textContent='루틴 보기 →'}}
+document.getElementById('tc-cta').textContent='루틴 보기 →';if(typeof coachUpd==='function')coachUpd(null)}}
 var box=document.getElementById('bars');
 if(box){var mon=new Date(now.getFullYear(),now.getMonth(),now.getDate()-((wd+6)%7));
 var vals=[],mx=1;
@@ -2888,6 +2897,71 @@ var d=new Date(found.ds+'T12:00:00'),un=(found.ent.u==='lbs')?'lb':'kg';
 var vnm='';if(found.k.indexOf('~')>0&&typeof EXMETA!=='undefined'){if(typeof varMeta==='function')varMeta(found.k);vnm=(EXMETA[found.k]||{}).name||''}
 var sets=found.ent.s.map(function(st){return fmtW(st.w)+'×'+st.r}).join(' · ');
 el.innerHTML='<span class="lr-l">지난번 '+(d.getMonth()+1)+'/'+d.getDate()+'('+dows[d.getDay()]+')</span>'+(vnm?'<span class="lr-v">'+vnm+'</span>':'')+'<span class="lr-s">'+(k==='apull'?'보조 ':'')+sets+' '+un+'</span>'})}
+
+/* ===== v16.3 홈 카드 코치 코멘트 (기록 기반 규칙) ===== */
+function coachHist(k,ref){
+var cands=[k];if(typeof VARS!=='undefined'&&VARS[k])cands=VARS[k].map(function(v){return k+'~'+v.id}).concat([k]);
+var best=null;
+cands.forEach(function(ck){var h=[];
+Object.keys(LOG.days).filter(function(d){return d<ref}).sort().forEach(function(d){var e=LOG.days[d];var ent=e&&e.ex&&e.ex[ck];
+if(ent&&ent.s&&ent.s.length)h.push({ds:d,u:ent.u,s:ent.s.filter(function(x){return x&&+x.r>0})})});
+h=h.filter(function(x){return x.s.length});
+if(h.length&&(!best||h[h.length-1].ds>best.h[best.h.length-1].ds))best={k:ck,h:h}});
+return best}
+function coachTips(td){
+var ref=tds(),tips=[];
+var prog=[],stall=[],low=[];
+if(td){document.querySelectorAll('#'+td+' .session.lunch .ex').forEach(function(row){
+if(row.classList.contains('exoff'))return;
+var k=histKeyOf(row);if(!k)return;
+var st=(row.querySelector('.ex-sets')||{}).textContent||'';
+var m=st.match(/(\d+)\s*[×x]\s*(\d+)(?:\s*[~\-]\s*(\d+))?/);if(!m)return;
+var n=+m[1],rmin=+m[2],rmax=+(m[3]||m[2]);
+var te=LOG.days[ref];if(te&&te.ex){var done=0;Object.keys(te.ex).forEach(function(tk){if(tk===k||tk.indexOf(k+'~')===0)done+=(te.ex[tk].s||[]).length});if(done>=n)return}
+var H=coachHist(k,ref);if(!H)return;
+var L=H.h[H.h.length-1],un=(L.u==='lbs')?'lb':'kg';
+var nm=(row.querySelector('.ex-name')||{}).firstChild;nm=nm?String(nm.textContent):k;
+if(H.k.indexOf('~')>0&&typeof EXMETA!=='undefined'){if(typeof varMeta==='function')varMeta(H.k);nm=(EXMETA[H.k]||{}).name||nm}
+nm=nm.replace(/\s*\(.*?\)\s*/g,' ').trim();
+if(k==='apull'){
+var mn=Math.min.apply(null,L.s.map(function(x){return +x.w}));
+var ok=L.s.filter(function(x){return +x.w<=mn&&+x.r>=rmax}).length>=n;
+if(ok)prog.push({nm:nm,t:'보조 '+fmtW(mn)+un+'로 '+n+'×'+rmax+' 완료 → 오늘 보조 '+fmtW(Math.max(0,mn-2.5))+un+' 도전'});
+return}
+var W=Math.max.apply(null,L.s.map(function(x){return +x.w}));
+var atW=L.s.filter(function(x){return +x.w===W});
+if(atW.length>=n&&atW.every(function(x){return +x.r>=rmax})){
+var inc=(un==='lb')?5:(W<30?2.5:5);
+prog.push({nm:nm,t:fmtW(W)+un+' 전 세트 '+rmax+'회 달성 → '+fmtW(W+inc)+un+' 도전'});return}
+if(H.h.length>=3){var last3=H.h.slice(-3);
+var tops=last3.map(function(x){return Math.max.apply(null,x.s.map(function(y){return +y.w}))});
+var reps=last3.map(function(x,i){return x.s.filter(function(y){return +y.w===tops[i]}).reduce(function(a,y){return a+(+y.r)},0)});
+if(tops[0]===tops[1]&&tops[1]===tops[2]&&reps[2]<=reps[0]){stall.push({nm:nm,t:fmtW(W)+un+' 3회 연속 정체 → 반복 1회씩 늘리기, 안 되면 10% 낮춰 재도전'});return}}
+var mxr=Math.max.apply(null,atW.map(function(x){return +x.r}));
+if(mxr<rmin)low.push({nm:nm,t:fmtW(W)+un+' 최고 '+mxr+'회 → 무게 유지, '+rmin+'회부터 채우기'});
+})}
+prog.slice(0,2).forEach(function(x){tips.push({i:'⬆',nm:x.nm,t:x.t})});
+stall.slice(0,1).forEach(function(x){tips.push({i:'⏸',nm:x.nm,t:x.t})});
+if(tips.length<2)low.slice(0,1).forEach(function(x){tips.push({i:'🎯',nm:x.nm,t:x.t})});
+/* 전체 흐름 */
+var days=Object.keys(LOG.days).filter(function(d){var e=LOG.days[d];return d<ref&&e&&e.ex&&Object.keys(e.ex).length}).sort();
+if(days.length){var gap=Math.round((new Date(ref+'T12:00:00')-new Date(days[days.length-1]+'T12:00:00'))/864e5);
+if(gap>=4&&td)tips.unshift({i:'🔥',nm:'',t:gap+'일 만의 운동 — 워밍업 충분히, 첫 종목은 평소의 90%로'})}
+var now=new Date(ref+'T12:00:00'),wd=now.getDay(),mon=new Date(now);mon.setDate(now.getDate()-((wd+6)%7));
+var wk=0,cd=0;for(var i=0;i<7;i++){var d=new Date(mon);d.setDate(mon.getDate()+i);var e=LOG.days[tds(d)];if(!e)continue;
+if(e.ex&&Object.keys(e.ex).length)wk++;if(typeof cdList==='function')cd+=cdList(e).length}
+if(cd===0&&(wd===0||wd>=3))tips.push({i:'🏃',nm:'',t:'이번 주 유산소 0회 — 오늘 마무리 20분 추천'});
+if(!td&&wk)tips.push({i:'✅',nm:'',t:'이번 주 웨이트 '+wk+'일 완료 — 오늘은 회복·가벼운 유산소'});
+if(!days.length)tips.unshift({i:'💡',nm:'',t:'기록이 쌓이면 증량 타이밍과 정체 구간을 알려드려요'});
+if(!tips.length)tips.push({i:'👍',nm:'',t:'지난 기록대로 순항 중 — 목표 반복수 상단까지 채워보기'});
+return tips.slice(0,3)}
+function coachUpd(td){
+var box=document.getElementById('tc-coach');if(!box||typeof LOG==='undefined'||!LOG)return;
+var tips;try{tips=coachTips(td)}catch(err){tips=[]}
+if(!tips.length){box.style.display='none';return}
+var esc=function(t){return String(t).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})};
+box.innerHTML='<div class="tcc-h">COACH</div>'+tips.map(function(x){return '<div class="tcc-r"><span class="tcc-i">'+x.i+'</span><span>'+(x.nm?'<b>'+esc(x.nm)+'</b> ':'')+esc(x.t)+'</span></div>'}).join('');
+box.style.display='block'}
 
 /* ===== v9 운동 기록 ===== */
 var KG2LB=2.20462;
