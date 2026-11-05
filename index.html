@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>주간 운동 루틴 v16.1</title>
+<title>주간 운동 루틴 v16.2</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="운동루틴">
@@ -501,12 +501,21 @@ repeating-linear-gradient(to bottom,transparent 0,transparent 9.6px,#33333B 9.6p
 .lr-l{color:var(--blu);font-weight:800;white-space:nowrap}
 .lr-v{color:var(--tx3);font-weight:700;white-space:nowrap}
 .lr-s{color:var(--tx2);font-weight:700;font-variant-numeric:tabular-nums}
+/* v16.2 종목 제목줄: 이름 전체폭, 세트×반복은 이름 아래 줄 */
+.ex-top{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;column-gap:8px;row-gap:2px;align-items:center}
+.ex-top .ex-n{grid-column:1;grid-row:1;align-self:baseline}
+.ex-top .ex-name{grid-column:2;grid-row:1;line-height:1.35}
+.ex-top .ex-sets{grid-column:2;grid-row:2;white-space:normal;line-height:1.35}
+.ex-top .histbtn{grid-column:3;grid-row:1/span 2;margin-left:0}
+.ex-top .logbtn{grid-column:4;grid-row:1/span 2;margin-left:0}
+.ex-top .histbtn + .logbtn{margin-left:0}
+.ex-top .exctl{grid-column:3/5;grid-row:1/span 2;align-self:center}
 
 </style>
 </head>
 <body>
 
-<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v16.1</div></header>
+<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v16.2</div></header>
 
 <section class="screen" id="scr-home">
 <div class="hero"><div class="hello" id="hello">안녕하세요 👋</div><div class="herodate" id="herodate"></div></div>
@@ -2704,7 +2713,7 @@ window._wTabDs=ds;window._wDs=ds;
 selectDay(dm[wDow(ds)]);
 wChipsUpd();wHeaderUpd();wRepSync();
 if(typeof updInline==='function')updInline();
-if(typeof stUpd==='function')stUpd()}
+if(typeof stUpd==='function')stUpd();if(typeof lastRecUpd==='function')lastRecUpd()}
 function wHostReturn(){
 var host=document.getElementById('logdayhost');if(!host)return;
 var c=host.querySelector('.day');if(!c)return;
