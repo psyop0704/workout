@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>주간 운동 루틴 v16.0</title>
+<title>주간 운동 루틴 v16.1</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="운동루틴">
@@ -495,12 +495,18 @@ repeating-linear-gradient(to bottom,transparent 0,transparent 9.6px,#33333B 9.6p
 .varchips button{height:40px;padding:0 13px;font-size:12px}
 .varchips button.on{background:var(--ac);border-color:var(--ac);color:var(--acd)}
 .vtag{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:7px;background:rgba(203,255,77,.12);color:var(--ac);font-size:10.5px;font-weight:800;vertical-align:middle}
+/* v16.1 지난번 기록 줄 */
+.lastrec{padding-left:22px;margin-top:4px;font-size:11.5px;line-height:1.5;display:flex;flex-wrap:wrap;gap:2px 6px;align-items:baseline}
+.xex .lastrec{padding-left:22px}
+.lr-l{color:var(--blu);font-weight:800;white-space:nowrap}
+.lr-v{color:var(--tx3);font-weight:700;white-space:nowrap}
+.lr-s{color:var(--tx2);font-weight:700;font-variant-numeric:tabular-nums}
 
 </style>
 </head>
 <body>
 
-<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v16.0</div></header>
+<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v16.1</div></header>
 
 <section class="screen" id="scr-home">
 <div class="hero"><div class="hello" id="hello">안녕하세요 👋</div><div class="herodate" id="herodate"></div></div>
@@ -2249,7 +2255,7 @@ var p=(typeof ent.p==='number')?ent.p:exRows.length;
 if(p<0)p=0;if(p>exRows.length)p=exRows.length;
 var anchor=(p<exRows.length)?exRows[p]:addb;
 if(anchor)lunch.insertBefore(r,anchor);else lunch.appendChild(r)});
-if(typeof histBtnsEnsure==='function')histBtnsEnsure();if(typeof varTagsUpd==='function')varTagsUpd(e)}
+if(typeof histBtnsEnsure==='function')histBtnsEnsure();if(typeof varTagsUpd==='function')varTagsUpd(e);if(typeof lastRecUpd==='function')lastRecUpd()}
 function exOrderNorm(e){
 if(!e||!e.ex)return;
 var ks=Object.keys(e.ex);
@@ -2723,8 +2729,8 @@ del.addEventListener('click',function(){var d=window._wDs;if(d&&LOG.days[d]&&con
 host.appendChild(del);
 del.style.display=has?'block':'none';del.textContent='이 날짜('+wMD(ds)+') 기록 전체 삭제';
 wHeaderUpd();wRepSync();
-if(typeof updInline==='function')updInline()}
-function wUiUpd(){wChipsUpd();wHeaderUpd();if(typeof histBtnsEnsure==='function')histBtnsEnsure()}
+if(typeof updInline==='function')updInline();if(typeof lastRecUpd==='function')lastRecUpd()}
+function wUiUpd(){wChipsUpd();wHeaderUpd();if(typeof histBtnsEnsure==='function')histBtnsEnsure();if(typeof lastRecUpd==='function')lastRecUpd()}
 
 /* ===== v15.8 매일 어시스트 턱걸이 ===== */
 (function(){
@@ -2849,6 +2855,30 @@ var ul=[];if(e&&e.ex)VARS[k].forEach(function(v){if(e.ex[k+'~'+v.id]&&e.ex[k+'~'
 if(!used){if(tag)tag.remove();return}
 if(!tag){tag=document.createElement('span');tag.className='vtag';var nm=row.querySelector('.ex-name');if(nm)nm.appendChild(tag)}
 tag.textContent=used})}
+
+/* ===== v16.1 종목 아래 '지난번' 기록 표시 ===== */
+function lastRecUpd(){
+if(typeof LOG==='undefined'||!LOG)return;
+var ref=(typeof wDs==='function')?wDs():tds();
+var keys=Object.keys(LOG.days).filter(function(d){return d<ref}).sort().reverse();
+var dows=['일','월','화','수','목','금','토'];
+document.querySelectorAll('.session.lunch .ex, .session.lunch .xex').forEach(function(row){
+var k=(typeof histKeyOf==='function')?histKeyOf(row):null;
+var el=row.querySelector('.lastrec');
+var found=null;
+if(k){
+var cands=[k];
+if(typeof VARS!=='undefined'&&VARS[k])cands=VARS[k].map(function(v){return k+'~'+v.id}).concat([k]);
+for(var i=0;i<keys.length&&!found;i++){var e=LOG.days[keys[i]];if(!e||!e.ex)continue;
+for(var j=0;j<cands.length;j++){var ent=e.ex[cands[j]];if(ent&&ent.s&&ent.s.length){found={ds:keys[i],ent:ent,k:cands[j]};break}}}}
+if(!found){if(el)el.remove();return}
+if(!el){el=document.createElement('div');el.className='lastrec';
+var meta=row.querySelector('.ex-meta');
+if(meta)row.insertBefore(el,meta);else row.appendChild(el)}
+var d=new Date(found.ds+'T12:00:00'),un=(found.ent.u==='lbs')?'lb':'kg';
+var vnm='';if(found.k.indexOf('~')>0&&typeof EXMETA!=='undefined'){if(typeof varMeta==='function')varMeta(found.k);vnm=(EXMETA[found.k]||{}).name||''}
+var sets=found.ent.s.map(function(st){return fmtW(st.w)+'×'+st.r}).join(' · ');
+el.innerHTML='<span class="lr-l">지난번 '+(d.getMonth()+1)+'/'+d.getDate()+'('+dows[d.getDay()]+')</span>'+(vnm?'<span class="lr-v">'+vnm+'</span>':'')+'<span class="lr-s">'+(k==='apull'?'보조 ':'')+sets+' '+un+'</span>'})}
 
 /* ===== v9 운동 기록 ===== */
 var KG2LB=2.20462;

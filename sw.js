@@ -1,5 +1,5 @@
 importScripts('./precache-manifest.js');
-var CACHE_NAME = 'workout-v16_0-20261105';
+var CACHE_NAME = 'workout-v16_1-20261105';
 self.addEventListener('install', function(event) {
   event.waitUntil(caches.open(CACHE_NAME).then(function(cache) {
     return cache.addAll(self.WORKOUT_PRECACHE);
