@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>주간 운동 루틴 v16.5</title>
+<title>주간 운동 루틴 v16.6</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="운동루틴">
@@ -567,12 +567,19 @@ repeating-linear-gradient(to bottom,transparent 0,transparent 9.6px,#33333B 9.6p
 .pu-ax{display:flex;justify-content:space-between;font-size:10px;color:var(--tx3);font-weight:700;letter-spacing:.06em;margin-top:14px;font-variant-numeric:tabular-nums}
 .tr-h{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:800;letter-spacing:.16em;color:var(--tx3)}
 .tr-h b{font-size:22px;letter-spacing:-.02em;color:var(--org);font-weight:800;font-variant-numeric:tabular-nums}
+/* v16.6 오늘 목표 */
+.tgline{padding-left:22px;margin-top:4px;font-size:12px;line-height:1.5;display:flex;gap:6px;align-items:baseline;word-break:keep-all}
+.tgline b{color:#101602;background:var(--ac);font-size:10px;font-weight:900;padding:1px 6px;border-radius:5px;flex-shrink:0}
+.tgline span{color:var(--ac);font-weight:700}
+.tgday{margin:4px 0 10px;padding:10px 12px;border-radius:12px;background:rgba(203,255,77,.07);border:1px solid rgba(203,255,77,.2);font-size:12.5px;line-height:1.5;display:flex;flex-direction:column;gap:2px;word-break:keep-all}
+.tgday b{font-size:10px;letter-spacing:.14em;color:var(--ac);font-weight:900}
+.tgday span{color:var(--tx);font-weight:600}
 
 </style>
 </head>
 <body>
 
-<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v16.5</div></header>
+<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v16.6</div></header>
 
 <section class="screen" id="scr-home">
 <div class="hero"><div class="hello" id="hello">안녕하세요 👋</div><div class="herodate" id="herodate"></div></div>
@@ -2936,6 +2943,7 @@ tag.textContent=used})}
 /* ===== v16.1 종목 아래 '지난번' 기록 표시 ===== */
 function lastRecUpd(){
 if(typeof LOG==='undefined'||!LOG)return;
+try{tgUpd()}catch(err){}
 var ref=(typeof wDs==='function')?wDs():tds();
 var keys=Object.keys(LOG.days).filter(function(d){return d<ref}).sort().reverse();
 var dows=['일','월','화','수','목','금','토'];
@@ -3100,6 +3108,19 @@ var un=(en.u==='lbs')?'lb':'kg';
 prCelebrate((info.k.split('~')[0]==='apull'?'보조 ':'')+fmtW(st.w)+un+' × '+st.r,t==='w'?'':'반복 최고');
 }else if(st.pr){delete st.pr;if(typeof persist==='function')persist()}
 }catch(e){}}})();
+
+/* ===== v16.6 날짜별 '오늘 목표' (e.tg) ===== */
+function tgUpd(){
+var ds=(typeof wDs==='function')?wDs():tds(),e=LOG.days[ds],tg=(e&&e.tg)||{};
+var esc=function(t){return String(t).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})};
+document.querySelectorAll('.tgline,.tgday').forEach(function(x){x.remove()});
+var id=(typeof wDayId==='function')?wDayId():null,day=id&&document.getElementById(id);if(!day)return;
+var lunch=day.querySelector('.session.lunch');if(!lunch)return;
+if(tg._day){var first=lunch.querySelector('.ex');var dn=document.createElement('div');dn.className='tgday';
+dn.innerHTML='<b>오늘 목표</b><span>'+esc(tg._day)+'</span>';if(first)lunch.insertBefore(dn,first);else lunch.appendChild(dn)}
+lunch.querySelectorAll('.ex').forEach(function(row){var k=row.dataset.orig;var t=k&&tg[k];if(!t)return;
+var el=document.createElement('div');el.className='tgline';el.innerHTML='<b>목표</b><span>'+esc(t)+'</span>';
+var meta=row.querySelector('.ex-meta');if(meta)row.insertBefore(el,meta);else row.appendChild(el)})}
 
 /* ===== v9 운동 기록 ===== */
 var KG2LB=2.20462;
