@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>주간 운동 루틴 v16.6</title>
+<title>주간 운동 루틴 v16.7</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="운동루틴">
@@ -579,7 +579,7 @@ repeating-linear-gradient(to bottom,transparent 0,transparent 9.6px,#33333B 9.6p
 </head>
 <body>
 
-<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v16.6</div></header>
+<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v16.7</div></header>
 
 <section class="screen" id="scr-home">
 <div class="hero"><div class="hello" id="hello">안녕하세요 👋</div><div class="herodate" id="herodate"></div></div>
@@ -2892,7 +2892,8 @@ var VARS={
 dblat:[{id:'db',nm:'덤벨 레터럴 레이즈'},{id:'cb',nm:'케이블 레터럴 레이즈'}],
 fly:[{id:'cb',nm:'케이블 플라이'},{id:'pd',nm:'펙덱 플라이'}],
 pullup:[{id:'pu',nm:'턱걸이'},{id:'lp',nm:'랫풀다운'}],
-squat:[{id:'bs',nm:'백스쿼트'},{id:'hs',nm:'해크스쿼트'}]};
+squat:[{id:'bs',nm:'백스쿼트'},{id:'hs',nm:'해크스쿼트'}],
+smithsplit:[{id:'hs',nm:'해크스쿼트'},{id:'ss',nm:'스미스 스플릿 스쿼트'}]};
 function varBase(k){return (k&&k.indexOf('~')>0)?k.split('~')[0]:k}
 function varMeta(vk){
 var b=varBase(vk),id=vk.split('~')[1],v=(VARS[b]||[]).filter(function(x){return x.id===id})[0];
