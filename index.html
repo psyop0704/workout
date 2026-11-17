@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>주간 운동 루틴 v16.7</title>
+<title>주간 운동 루틴 v16.8</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="운동루틴">
@@ -579,7 +579,7 @@ repeating-linear-gradient(to bottom,transparent 0,transparent 9.6px,#33333B 9.6p
 </head>
 <body>
 
-<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v16.7</div></header>
+<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v16.8</div></header>
 
 <section class="screen" id="scr-home">
 <div class="hero"><div class="hello" id="hello">안녕하세요 👋</div><div class="herodate" id="herodate"></div></div>
@@ -1823,7 +1823,7 @@ hello.textContent=(h<5)?'늦은 시간까지 수고 많아요 🌙':(h<12)?'좋�
 var hd=document.getElementById('herodate');
 if(hd)hd.textContent=(now.getMonth()+1)+'월 '+now.getDate()+'일 '+['일','월','화','수','목','금','토'][wd]+'요일';
 var tt=document.getElementById('tc-title');
-if(tt){var td=dm[wd];
+if(tt){var td=(typeof wRt==='function')?wRt(tds()):dm[wd];
 if(td){var bd=document.querySelector('#'+td+' .day-header .badge');
 var txt=bd?bd.textContent.replace('✓','').trim():'';
 var sp=txt.split('·');
@@ -2751,7 +2751,8 @@ if(mini)mini.textContent='🧘 스트레칭·케어 — 오늘 '+tn+'/'+STR.leng
 /* ===== v15.4 날짜 컨텍스트 (선택한 요일·달력 날짜에 기록) ===== */
 function wDs(){return window._wDs||tds()}
 function wDow(ds){return new Date(ds+'T12:00:00').getDay()}
-function wDayId(){return dm[wDow(wDs())]}
+function wRt(ds){var e=(typeof LOG!=='undefined'&&LOG&&LOG.days)?LOG.days[ds]:null,r=e&&e.rt;return (r&&document.getElementById(r))?r:dm[wDow(ds)]}
+function wDayId(){return wRt(wDs())}
 function wMD(ds){var p=ds.split('-');return (+p[1])+'/'+(+p[2])}
 function wMon(ds){var d=new Date(ds+'T12:00:00');return new Date(d.getFullYear(),d.getMonth(),d.getDate()-((d.getDay()+6)%7))}
 var WOFF={'day-mon':0,'day-tue':1,'day-wed':2,'day-thu':3,'day-fri':4,'day-sat':5,'day-sun':6};
@@ -2771,7 +2772,8 @@ var hd=card.querySelector('.day-header');if(!hd)return;
 var sp=hd.querySelector('.dhdate');
 if(!sp){sp=document.createElement('span');sp.className='dhdate';hd.insertBefore(sp,hd.querySelector('.badge'))}
 var ds=wDs(),t=tds();
-sp.textContent=wMD(ds)+(ds===t?' 오늘':(ds>t?' 예정':''));
+var sw=(id!==dm[wDow(ds)]);
+sp.textContent=wMD(ds)+(ds===t?' 오늘':(ds>t?' 예정':''));sp.classList.toggle('sw',sw);
 sp.classList.toggle('past',ds<t)}
 function wRepSync(){
 if(typeof LOG==='undefined'||!LOG)return;
@@ -2785,7 +2787,8 @@ if(x._cfgKey!==key){applyEdit(x,cfg);x._cfgKey=key}});
 renumberDay(day)}
 function wPick(ds){
 window._wTabDs=ds;window._wDs=ds;
-selectDay(dm[wDow(ds)]);
+selectDay(wRt(ds));
+document.querySelectorAll('.daychips button').forEach(function(b){b.classList.toggle('on',b.dataset.d===dm[wDow(ds)])});
 wChipsUpd();wHeaderUpd();wRepSync();
 if(typeof updInline==='function')updInline();
 if(typeof stUpd==='function')stUpd();if(typeof lastRecUpd==='function')lastRecUpd()}
@@ -2799,7 +2802,7 @@ function wLogMount(ds){
 var lg=document.getElementById('scr-log');if(!lg||!lg.classList.contains('on'))return;
 var host=document.getElementById('logdayhost');if(!host)return;
 window._wDs=ds;
-var card=document.getElementById(dm[wDow(ds)]);if(!card)return;
+var card=document.getElementById(wRt(ds));if(!card)return;
 var cur=host.querySelector('.day');
 if(cur&&cur!==card)wHostReturn();
 if(card.parentNode!==host){card._ph=document.createComment('dayph');card.parentNode.insertBefore(card._ph,card);host.appendChild(card)}
