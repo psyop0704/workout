@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>주간 운동 루틴 v16.8</title>
+<title>주간 운동 루틴 v16.9</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="운동루틴">
@@ -574,12 +574,13 @@ repeating-linear-gradient(to bottom,transparent 0,transparent 9.6px,#33333B 9.6p
 .tgday{margin:4px 0 10px;padding:10px 12px;border-radius:12px;background:rgba(203,255,77,.07);border:1px solid rgba(203,255,77,.2);font-size:12.5px;line-height:1.5;display:flex;flex-direction:column;gap:2px;word-break:keep-all}
 .tgday b{font-size:10px;letter-spacing:.14em;color:var(--ac);font-weight:900}
 .tgday span{color:var(--tx);font-weight:600}
+.dhsw{font-size:10.5px;font-weight:800;color:#101602;background:var(--ac);padding:2px 7px;border-radius:6px;margin-left:6px;white-space:nowrap}
 
 </style>
 </head>
 <body>
 
-<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v16.8</div></header>
+<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v16.9</div></header>
 
 <section class="screen" id="scr-home">
 <div class="hero"><div class="hello" id="hello">안녕하세요 👋</div><div class="herodate" id="herodate"></div></div>
@@ -2764,7 +2765,8 @@ var i=WOFF[b.dataset.d];if(i===undefined)return;
 var ds=tds(new Date(m.getFullYear(),m.getMonth(),m.getDate()+i));
 var e=(typeof LOG!=='undefined'&&LOG)?LOG.days[ds]:null;
 var rec=!!(e&&((e.ex&&Object.keys(e.ex).length)||(typeof cdList==='function'&&cdList(e).length)));
-b.innerHTML='<span class="dn">'+nm[i]+' <i>'+(+ds.slice(8))+'</i></span><span class="dd">'+(b._dd||'')+'</span>';
+var rt=e&&e.rt,rb=(rt&&rt!==b.dataset.d)?document.querySelector('.daychips button[data-d="'+rt+'"]'):null;
+b.innerHTML='<span class="dn">'+nm[i]+' <i>'+(+ds.slice(8))+'</i></span><span class="dd">'+((rb&&rb._dd)||b._dd||'')+'</span>';
 b.classList.toggle('tdy',ds===td);b.classList.toggle('rec',rec)})}
 function wHeaderUpd(){
 var id=wDayId(),card=id&&document.getElementById(id);if(!card)return;
@@ -2774,6 +2776,11 @@ if(!sp){sp=document.createElement('span');sp.className='dhdate';hd.insertBefore(
 var ds=wDs(),t=tds();
 var sw=(id!==dm[wDow(ds)]);
 sp.textContent=wMD(ds)+(ds===t?' 오늘':(ds>t?' 예정':''));sp.classList.toggle('sw',sw);
+var tn=null;for(var ci=0;ci<hd.childNodes.length;ci++){if(hd.childNodes[ci].nodeType===3&&hd.childNodes[ci].textContent.trim()){tn=hd.childNodes[ci];break}}
+if(tn){if(hd._onm===undefined)hd._onm=tn.textContent;
+var wn=['일','월','화','수','목','금','토'];
+tn.textContent=sw?wn[wDow(ds)]+'요일':hd._onm;
+}
 sp.classList.toggle('past',ds<t)}
 function wRepSync(){
 if(typeof LOG==='undefined'||!LOG)return;
