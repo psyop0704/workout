@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>주간 운동 루틴 v17.1</title>
+<title>주간 운동 루틴 v17.2</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="운동루틴">
@@ -643,7 +643,7 @@ grid-template-areas:"cal lab" "cal host" "cal detail" "trend cdtrend" "data data
 </head>
 <body>
 
-<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v17.1</div></header>
+<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v17.2</div></header>
 
 <section class="screen" id="scr-home">
 <div class="hero"><div class="hello" id="hello">안녕하세요 👋</div><div class="herodate" id="herodate"></div></div>
@@ -3195,6 +3195,38 @@ dn.innerHTML='<b>오늘 목표</b><span>'+esc(tg._day)+'</span>';if(first)lunch.
 lunch.querySelectorAll('.ex').forEach(function(row){var k=row.dataset.orig;var t=k&&tg[k];if(!t)return;
 var el=document.createElement('div');el.className='tgline';el.innerHTML='<b>목표</b><span>'+esc(t)+'</span>';
 var meta=row.querySelector('.ex-meta');if(meta)row.insertBefore(el,meta);else row.appendChild(el)})}
+
+/* ===== v17.2 직접 입력한 이름이 기존 종목과 같으면 같은 기록으로 ===== */
+function exNorm(s){return String(s||'').replace(/\s+/g,'').toLowerCase()}
+function knownKeyByName(nm){
+var t=exNorm(nm);if(!t)return null;var hit=null;
+var chk=function(k,name){if(hit||!name||!k||k.indexOf('c_')===0||k.indexOf('~')>0)return;
+var a=exNorm(name),b=exNorm(String(name).replace(/\(.*?\)/g,''));
+if(a===t||b===t)hit=k};
+if(typeof DB!=='undefined'&&DB)Object.keys(DB).forEach(function(k){chk(k,DB[k]&&DB[k].name)});
+if(typeof EXMETA!=='undefined')Object.keys(EXMETA).forEach(function(k){chk(k,EXMETA[k]&&EXMETA[k].name)});
+return hit}
+(function(){
+if(typeof pickCustom==='function'){var oc=pickCustom;
+pickCustom=function(){var el=document.getElementById('exname');var kk=el?knownKeyByName(el.value.trim()):null;
+if(kk){closeExPicker();openSheet(kk);return}return oc.apply(this,arguments)}}
+})();
+function migrateCustomKeys(){
+if(typeof LOG==='undefined'||!LOG||!LOG.days)return false;var chg=false;
+Object.keys(LOG.days).forEach(function(ds){var e=LOG.days[ds];if(!e||!e.ex)return;
+var repNames={};if(e.rep)Object.keys(e.rep).forEach(function(o){var c=e.rep[o];if(c&&c.nm)repNames[exNorm(c.nm)]=1});
+Object.keys(e.ex).forEach(function(ck){if(ck.indexOf('c_')!==0)return;var ent=e.ex[ck];
+var nm=(ent&&ent.name)||ck.slice(2).replace(/_/g,' ');if(repNames[exNorm(nm)])return;
+var kk=knownKeyByName(nm);if(!kk)return;
+if(e.ex[kk]&&e.ex[kk].s){e.ex[kk].s=e.ex[kk].s.concat(ent.s||[])}else{var n={};Object.keys(ent).forEach(function(f){if(f!=='name')n[f]=ent[f]});e.ex[kk]=n}
+delete e.ex[ck];chg=true})});
+return chg}
+(function(){
+if(typeof refreshLog!=='function'||window._mgWrapped)return;window._mgWrapped=true;
+var orf=refreshLog;
+refreshLog=function(){var c=false;try{c=migrateCustomKeys()}catch(err){}
+var r=orf.apply(this,arguments);
+if(c&&typeof persist==='function')setTimeout(persist,0);return r}})();
 
 /* ===== v9 운동 기록 ===== */
 var KG2LB=2.20462;
