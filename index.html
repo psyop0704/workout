@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>주간 운동 루틴 v17.0</title>
+<title>주간 운동 루틴 v17.1</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="운동루틴">
@@ -575,12 +575,75 @@ repeating-linear-gradient(to bottom,transparent 0,transparent 9.6px,#33333B 9.6p
 .tgday b{font-size:10px;letter-spacing:.14em;color:var(--ac);font-weight:900}
 .tgday span{color:var(--tx);font-weight:600}
 .dhsw{font-size:10.5px;font-weight:800;color:#101602;background:var(--ac);padding:2px 7px;border-radius:6px;margin-left:6px;white-space:nowrap}
+/* ===== v17.1 화면 크기별 반응형 ===== */
+.cal-grid{grid-template-columns:repeat(7,minmax(0,1fr))}
+@media (max-width:374px){
+body{padding-left:12px;padding-right:12px}
+.card{padding-left:14px;padding-right:14px}
+.cal-d{min-height:0;border-radius:10px;font-size:12px}
+.cal-grid{gap:2px}
+.daychips{gap:3px}
+.daychips button{border-radius:11px;height:46px}
+.daychips button .dn{font-size:11.5px}
+.daychips button .dn i{display:none}
+.daychips button .dd{font-size:7.5px;letter-spacing:-.3px}
+.grid2{gap:8px}
+.ring,.ring svg{width:104px;height:104px}
+.st.lg{gap:7px}
+.tc-title{font-size:30px}
+.lastrec,.tgline{padding-left:18px}
+}
+@media (min-width:768px){
+body,.tabbar{max-width:880px}
+body{padding-left:24px;padding-right:24px}
+#scr-home.on{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:stretch;
+grid-template-areas:"hero hero" "today stats" "mot week" "cd st" "month month"}
+#scr-home.on>*{margin:0}
+#scr-home.on>:nth-child(1){grid-area:hero}
+#scr-home.on>:nth-child(2){grid-area:today}
+#scr-home.on>:nth-child(3){grid-area:stats;grid-template-columns:1fr;grid-template-rows:auto auto}
+#scr-home.on>:nth-child(3) .card:first-child{flex-direction:row;justify-content:center;gap:16px}
+#scr-home.on>:nth-child(4){grid-area:mot}
+#scr-home.on>:nth-child(5){grid-area:cd;height:auto;min-height:50px}
+#scr-home.on>:nth-child(6){grid-area:st;height:auto;min-height:50px}
+#scr-home.on>:nth-child(7){grid-area:week}
+#scr-home.on>:nth-child(8){grid-area:month}
+#scr-home.on>.grid2{display:grid;gap:14px}
+.daychips button{height:56px}
+.daychips button .dn{font-size:14px}
+.daychips button .dn i{font-size:12px}
+.daychips button .dd{font-size:10px}
+}
+@media (min-width:1024px){
+body,.tabbar{max-width:1180px}
+body{padding-left:32px;padding-right:32px}
+#scr-home.on{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) minmax(0,1fr);
+grid-template-areas:"hero hero hero" "today stats mot" "week week mot" "cd st mot" "month month month"}
+#scr-workout.on{display:grid;grid-template-columns:360px minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:20px;align-items:start}
+#scr-workout.on>#stcard{grid-column:1;grid-row:1/span 2;position:sticky;top:64px;margin:0;max-height:calc(100vh - 160px);overflow-y:auto}
+#scr-workout.on>.daychips,#scr-workout.on>.day{grid-column:2}
+#scr-log.on{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);column-gap:20px;align-items:start;
+grid-template-areas:"cal lab" "cal host" "cal detail" "trend cdtrend" "data data"}
+#scr-log.on>*{margin-bottom:14px}
+#scr-log.on>:nth-child(1){grid-area:cal;position:sticky;top:64px}
+#scr-log.on>:nth-child(2){grid-area:lab}
+#scr-log.on>:nth-child(3){grid-area:host}
+#scr-log.on>:nth-child(4){grid-area:detail}
+#scr-log.on>:nth-child(5){grid-area:trend}
+#scr-log.on>:nth-child(6){grid-area:cdtrend}
+#scr-log.on>:nth-child(7){grid-area:data}
+#scr-guide.on{max-width:900px;margin:0 auto}
+.tabbar{border-radius:20px 20px 0 0;border-left:1px solid var(--ln);border-right:1px solid var(--ln)}
+}
+.day-header{flex-wrap:wrap;row-gap:6px;white-space:nowrap}
+@media (min-width:1024px){#scr-home.on>:nth-child(4){align-self:start}}
+@media (min-width:768px){.cal-d{aspect-ratio:auto;height:54px;min-height:0}}
 
 </style>
 </head>
 <body>
 
-<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v17.0</div></header>
+<header class="appbar"><div class="ab-title">운동 루틴</div><div class="ab-ver">v17.1</div></header>
 
 <section class="screen" id="scr-home">
 <div class="hero"><div class="hello" id="hello">안녕하세요 👋</div><div class="herodate" id="herodate"></div></div>
